@@ -26,11 +26,11 @@ namespace PRG2_T13_00
             // Add an airline to the dictionary
             public bool AddAirline(Airline airline)
             {
-                if (airline == null || airlines.ContainsKey(airline.Name))
+                if (airline == null || Airlines.ContainsKey(airline.Name))
                 {
                     return false;
                 }
-                airlines.Add(airline.Name, airline);
+                Airlines.Add(airline.Name, airline);
                 return true;
             }
 
@@ -41,7 +41,7 @@ namespace PRG2_T13_00
                 {
                     return false;
                 }
-                boardingGates.Add(boardingGate.GateID, boardingGate);
+                BoardingGates.Add(boardingGate.GateID, boardingGate);
                 return true;
             }
 

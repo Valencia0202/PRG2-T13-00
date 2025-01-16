@@ -39,7 +39,7 @@ namespace PRG2_T13_00
         }
         public override string ToString()
         {
-            return base.ToString() + "Name: " + Name + "\tCode:" + Code;
+            return base.ToString() + "\tName: " + Name + "\tCode:" + Code;
         }
     }
 }
