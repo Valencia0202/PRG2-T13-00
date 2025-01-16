@@ -26,29 +26,29 @@ namespace PRG2_T13_00
             // Add an airline to the dictionary
             public bool AddAirline(Airline airline)
             {
-                if (airline == null || airlines.ContainsKey(airline.Name))
+                if (airline == null || Airlines.ContainsKey(airline.Name))
                 {
                     return false;
                 }
-                airlines.Add(airline.Name, airline);
+                Airlines.Add(airline.Name, airline);
                 return true;
             }
 
             // Add a boarding gate to the dictionary
             public bool AddBoardingGate(BoardingGate boardingGate)
             {
-                if (boardingGate == null || boardingGates.ContainsKey(boardingGate.GateID))
+                if (boardingGate == null || BoardingGates.ContainsKey(boardingGate.gateName))
                 {
                     return false;
                 }
-                boardingGates.Add(boardingGate.GateID, boardingGate);
+                BoardingGates.Add(boardingGate.gateName, boardingGate);
                 return true;
             }
 
             // Get the airline associated with a specific flight
             public Airline GetAirlineFromFlight(Flight flight)
             {
-                if (flight == null || !flights.ContainsKey(flight.FlightID))
+                if (flight == null || !Flights.ContainsKey(flight.FlightID))
                 {
                     return null;
                 }
