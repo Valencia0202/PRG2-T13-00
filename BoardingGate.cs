@@ -15,9 +15,9 @@ namespace PRG2_T13_00
         public Flight flight { get; set; }
 
         //constructor
-        public BoardingGate(string getname, bool supportsCFFT, bool supportsDDJB, bool supportsLWTT, Flight flight)
+        public BoardingGate(string gateName, bool supportsCFFT, bool supportsDDJB, bool supportsLWTT, Flight flight)
         {
-            gateName = getname;
+            gateName = gateName;
             supportsCFFT = supportsCFFT;
             supportsDDJB = supportsDDJB;
             supportsLWTT=supportsLWTT; 
@@ -25,11 +25,20 @@ namespace PRG2_T13_00
         }
 
         public double CalculateFees()
-        { return flight.CalculateFees(); }
-
+        {
+            double baseFee = 300; // Base fee for 
+        }
         public override string ToString()
         {
             return base.ToString();
+        }
+        public override string ToString()
+        {
+            return $"Name: {gateName}\n" +
+                   $"CFFT: {supportsCFFT}\n" +
+                   $"DDJB:  {supportsDDJB}\n" +
+                   CalculateFees() +
+                   $"LWTT: {supportsLWTT}";
         }
     }
 }
