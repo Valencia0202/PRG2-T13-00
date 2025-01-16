@@ -10,10 +10,10 @@ namespace PRG2_T13_00
         {
             // Attributes
             public string TerminalName { get; set; }
-            private Dictionary<string, Airline> airlines = new Dictionary<string, Airline>();
-            private Dictionary<string, Flight> flights = new Dictionary<string, Flight>();
-            private Dictionary<string, BoardingGate> boardingGates = new Dictionary<string, BoardingGate>();
-            private Dictionary<string, double> gateFees = new Dictionary<string, double>();
+            private Dictionary<string, Airline> Airlines = new Dictionary<string, Airline>();
+            private Dictionary<string, Flight> Flights = new Dictionary<string, Flight>();
+            private Dictionary<string, BoardingGate> BoardingGates = new Dictionary<string, BoardingGate>();
+            private Dictionary<string, double> GateFees = new Dictionary<string, double>();
 
             // Constructor
             public Terminal(string terminalName)
