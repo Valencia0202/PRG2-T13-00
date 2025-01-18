@@ -28,18 +28,14 @@ namespace PRG2_T13_00
         }
         public double CalculateFees(string destination, string origin)
         {
-            double fees = 0;
-
-            if (destination == "SIN")
+            double totalfees = 0;
+            // iterate through all the flights in the dictionarry
+            foreach(var flight in Flights.Values)
             {
-                fees = 500; // Fee when destination is SIN
+                // Calculate the total fees
+                totalfees += flight.CalculateFees();
             }
-            else if (origin == "SIN")
-            {
-                fees = 800; // Fee when origin is SIN
-            }
-
-            return fees;
+            return totalfees;
         }
 
         public bool RemoveFlight(Flight flight)

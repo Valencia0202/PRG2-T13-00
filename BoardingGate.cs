@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PRG2_T13_00
 {
-    public class BoardingGate
+    class BoardingGate
     {
         public string GateName { get; set; }
         public bool SupportsCFFT { get; set; }
