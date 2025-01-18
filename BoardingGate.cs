@@ -12,7 +12,7 @@ namespace PRG2_T13_00
         public bool supportsCFFT { get; set; }
         public bool supportsDDJB { get; set; }
         public bool supportsLWTT { get; set; }
-        public Flight flight { get; set; }
+        public Flight Flight { get; set; }
 
         //constructor
         public BoardingGate(string gateName, bool supportsCFFT, bool supportsDDJB, bool supportsLWTT, Flight flight)
@@ -27,6 +27,7 @@ namespace PRG2_T13_00
         public double CalculateFees()
         {
             double baseFee = 300; // Base fee for 
+            return baseFee;
         }
         public override string ToString()
         {

@@ -11,7 +11,8 @@ namespace PRG2_T13_00
         public double RequestFee {  get; set; }
         public override double CalculateFees()
         {
-            
+            double fee = 300;
+           return fee;
         }
         public override string ToString()
         {

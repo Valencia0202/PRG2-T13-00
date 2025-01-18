@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace PRG2_T13_00
 {
@@ -24,10 +26,22 @@ namespace PRG2_T13_00
             Flights.Add(flight.FlightNumber, flight);
             return true;
         }
-        public  double CalculateFees()
+        public double CalculateFees(string destination, string origin)
         {
+            double fees = 0;
 
+            if (destination == "SIN")
+            {
+                fees = 500; // Fee when destination is SIN
+            }
+            else if (origin == "SIN")
+            {
+                fees = 800; // Fee when origin is SIN
+            }
+
+            return fees;
         }
+
         public bool RemoveFlight(Flight flight)
         {
             if (Flights.ContainsKey(flight.FlightNumber))

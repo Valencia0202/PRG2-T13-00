@@ -48,13 +48,13 @@ namespace PRG2_T13_00
             // Get the airline associated with a specific flight
             public Airline GetAirlineFromFlight(Flight flight)
             {
-                if (flight == null || !Flights.ContainsKey(flight.FlightID))
+                if (flight == null || !Flights.ContainsKey(flight.FlighNumber))
                 {
                     return null;
                 }
 
-                string airlineName = flight.AirlineName;
-                return airlines.ContainsKey(airlineName) ? airlines[airlineName] : null;
+                string airlineName = flight.FlightNumber;
+                return Airline.ContainsKey(airlineName) ? Airlines[airlineName] : null;
             }
 
             // Print airline fees
