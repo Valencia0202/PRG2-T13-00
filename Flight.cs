@@ -22,7 +22,11 @@ namespace PRG2_T13_00
             ExpectedTime = ET;
             Status = s;
         }
-        public abstract double CalculateFees();
+        public virtual double CalculateFees()
+        {
+            // Default implementation
+            return 0;
+        }
         public override string ToString()
         {
             return base.ToString() + "FlightNumber:" + FlightNumber + "Origin:" + Origin + "Destination:" + Destination + "Expected Time:" + ExpectedTime.ToString("dd/MM/yyyy");
