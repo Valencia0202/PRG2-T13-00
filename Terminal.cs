@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PRG2_T13_00
 {
-        public class Terminal
+        class Terminal
         {
             // Attributes
             public string TerminalName { get; set; }
@@ -37,18 +37,18 @@ namespace PRG2_T13_00
             // Add a boarding gate to the dictionary
             public bool AddBoardingGate(BoardingGate boardingGate)
             {
-                if (boardingGate == null || BoardingGates.ContainsKey(boardingGate.gateName))
+                if (boardingGate == null || BoardingGates.ContainsKey(boardingGate.GateName))
                 {
                     return false;
                 }
-                BoardingGates.Add(boardingGate.gateName, boardingGate);
+                BoardingGates.Add(boardingGate.GateName, boardingGate);
                 return true;
             }
 
             // Get the airline associated with a specific flight
             public Airline GetAirlineFromFlight(Flight flight)
             {
-                if (flight == null || !Flights.ContainsKey(flight.FlighNumber))
+                if (flight == null || !Flights.ContainsKey(flight.FlightNumber))
                 {
                     return null;
                 }
@@ -61,7 +61,7 @@ namespace PRG2_T13_00
             public void PrintAirlineFees()
             {
                 Console.WriteLine("Airline Fees:");
-                foreach (var gateFee in gateFees)
+                foreach (var gateFee in GateFees)
                 {
                     Console.WriteLine($"Gate {gateFee.Key}: ${gateFee.Value}");
                 }
@@ -71,9 +71,9 @@ namespace PRG2_T13_00
             public override string ToString()
             {
                 return $"Terminal Name: {TerminalName}\n" +
-                       $"Number of Airlines: {airlines.Count}\n" +
-                       $"Number of Flights: {flights.Count}\n" +
-                       $"Number of Boarding Gates: {boardingGates.Count}";
+                       $"Number of Airlines: {Airlines.Count}\n" +
+                       $"Number of Flights: {Flights.Count}\n" +
+                       $"Number of Boarding Gates: {BoardingGates.Count}";
             }
         }
     }
