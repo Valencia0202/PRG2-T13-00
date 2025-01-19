@@ -6,13 +6,18 @@ using System.Threading.Tasks;
 
 namespace PRG2_T13_00
 {
-    internal class NORMFlight:Flight
+    class NORMFlight:Flight
     {
         public override double CalculateFees()
         {
-            double fees = 50;  
-            return fees;
+            if (base.CalculateFees() > 0)
+            {
+                double fees = base.CalculateFees() + 300 ;
+                return fees;
+            }
+            return base.CalculateFees();
         }
+        public NORMFlight(string Fn, string o, string d, DateTime ET, string s) : base(Fn, o, d, ET, s) {}
         public override string ToString()
         {
             return base.ToString();

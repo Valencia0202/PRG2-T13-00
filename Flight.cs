@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PRG2_T13_00
 {
-    abstract class Flight
+    class Flight
     {
         public string FlightNumber { get; set; }
         public string Origin { get; set; }
@@ -24,8 +24,19 @@ namespace PRG2_T13_00
         }
         public virtual double CalculateFees()
         {
-            // Default implementation
-            return 0;
+            double fees = 0;
+
+            if (Destination == "SIN")
+            {
+                fees = 500; // Fee when destination is SIN
+            }
+            else if (Origin == "SIN")
+            {
+                fees = 800; // Fee when origin is SIN
+            }
+
+            return fees;
+
         }
         public override string ToString()
         {

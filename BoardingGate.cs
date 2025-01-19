@@ -6,22 +6,22 @@ using System.Threading.Tasks;
 
 namespace PRG2_T13_00
 {
-    public class BoardingGate
+    class BoardingGate
     {
-        public string gateName { get; set; }
-        public bool supportsCFFT { get; set; }
-        public bool supportsDDJB { get; set; }
-        public bool supportsLWTT { get; set; }
+        public string GateName { get; set; }
+        public bool SupportsCFFT { get; set; }
+        public bool SupportsDDJB { get; set; }
+        public bool SupportsLWTT { get; set; }
         public Flight Flight { get; set; }
 
         //constructor
         public BoardingGate(string gateName, bool supportsCFFT, bool supportsDDJB, bool supportsLWTT, Flight flight)
         {
-            gateName = gateName;
-            supportsCFFT = supportsCFFT;
-            supportsDDJB = supportsDDJB;
-            supportsLWTT=supportsLWTT; 
-            flight = flight;
+            GateName = gateName;
+            SupportsCFFT = supportsCFFT;
+            SupportsDDJB = supportsDDJB;
+            SupportsLWTT=supportsLWTT; 
+            Flight = flight;
         }
 
         public double CalculateFees()
@@ -29,17 +29,14 @@ namespace PRG2_T13_00
             double baseFee = 300; // Base fee for 
             return baseFee;
         }
+     
         public override string ToString()
         {
-            return base.ToString();
-        }
-        public override string ToString()
-        {
-            return $"Name: {gateName}\n" +
-                   $"CFFT: {supportsCFFT}\n" +
-                   $"DDJB:  {supportsDDJB}\n" +
+            return $"Name: {GateName}\n" +
+                   $"CFFT: {SupportsCFFT}\n" +
+                   $"DDJB:  {SupportsDDJB}\n" +
                    CalculateFees() +
-                   $"LWTT: {supportsLWTT}";
+                   $"LWTT: {SupportsLWTT}";
         }
     }
 }

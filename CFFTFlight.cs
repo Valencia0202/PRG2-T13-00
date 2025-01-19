@@ -12,8 +12,17 @@ namespace PRG2_T13_00
        
         public override double CalculateFees()
         {
-            double fee = 150;
-            return fee;
+            if (base.CalculateFees() > 0)
+            {
+                double fees = base.CalculateFees() + RequestFee + 300;
+                return fees;
+            }
+            return base.CalculateFees();
+            
+        }
+        public CFFTFlight(string Fn, string o, string d, DateTime ET, string s, double Rf) : base(Fn, o, d, ET, s)
+        {
+            RequestFee = Rf;
         }
         public override string ToString()
         {
