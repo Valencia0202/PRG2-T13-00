@@ -61,7 +61,7 @@ namespace PRG2_T13_00
             public void PrintAirlineFees()
             {
                 Console.WriteLine("Airline Fees:");
-                foreach (var gateFee in gateFees)
+                foreach (var gateFee in CalculateFees())
                 {
                     Console.WriteLine($"Gate {gateFee.Key}: ${gateFee.Value}");
                 }
@@ -71,9 +71,9 @@ namespace PRG2_T13_00
             public override string ToString()
             {
                 return $"Terminal Name: {TerminalName}\n" +
-                       $"Number of Airlines: {airlines.Count}\n" +
-                       $"Number of Flights: {flights.Count}\n" +
-                       $"Number of Boarding Gates: {boardingGates.Count}";
+                       $"Number of Airlines: {Airline.Count}\n" +
+                       $"Number of Flights: {Flight.Count}\n" +
+                       $"Number of Boarding Gates: {BoardingGate.Count}";
             }
         }
     }
