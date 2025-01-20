@@ -20,7 +20,7 @@ internal class Program
             string dest = lines[2];
             DateTime datetime = Convert.ToDateTime(lines[3]);
             Flight flight = new Flight(flightno,origin,dest,datetime,"On Time");
-            flightdict.Add(flightno,flight);
+            flightdict.Add(flight.FlightNumber,flight);
         }
         foreach(var item in flightdict)
         {
