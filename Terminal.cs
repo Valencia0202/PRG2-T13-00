@@ -54,7 +54,7 @@ namespace PRG2_T13_00
                 }
 
                 string airlineName = flight.FlightNumber;
-                return Airline.ContainsKey(airlineName) ? Airlines[airlineName] : null;
+                return Airlines.ContainsKey(airlineName) ? Airlines[airlineName] : null;
             }
 
             // Print airline fees

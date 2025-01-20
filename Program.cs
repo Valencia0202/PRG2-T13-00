@@ -11,12 +11,20 @@ internal class Program
 
         //2
         string[] csvlines = File.ReadAllLines("Flights.csv");
-        for(int i = 0; i < csvlines.Length; i++)
+        Dictionary<string,Flight> flightdict = new Dictionary<string,Flight>();
+        for(int i = 1; i < csvlines.Length; i++)
         {
             string[] lines = csvlines[i].Split(',');
             string flightno = lines[0];
             string origin = lines[1];
             string dest = lines[2];
+            DateTime datetime = Convert.ToDateTime(lines[3]);
+            Flight flight = new Flight(flightno,origin,dest,datetime,"On Time");
+            flightdict.Add(flightno,flight);
+        }
+        foreach(var item in flightdict)
+        {
+            Console.Write("{0} {1}",item.Key,item.Value);
         }
 
 

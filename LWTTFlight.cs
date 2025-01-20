@@ -22,7 +22,7 @@ namespace PRG2_T13_00
         {
             RequestFee = Rf;
         }
-        public string ToString()
+        public override string ToString()
         {
             return base.ToString() + "RequestFee:"+RequestFee;
         }
