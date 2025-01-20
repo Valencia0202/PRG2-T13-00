@@ -4,38 +4,42 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        //1
-
-
-
-        
-        //2
-
-
-
-        //3
-
-
-        //4
-
-
-        //5
-
-
-        //6
-
-        //7
-
-
-        //8
+    //1
+    private Dictionary<string, Airline> Airlines = new Dictionary<string, Airline>();
 
 
 
 
-        //9
 
-    }
+
+    //2
+
+
+
+    //3
+
+
+    //4
+
+
+    //5
+
+
+    //6
+
+    //7
+
+
+    //8
+
+
+
+
+    //9
 }
+
+}
+
 
 
 

@@ -45,20 +45,24 @@ namespace PRG2_T13_00
                 return true;
             }
 
-            // Get the airline associated with a specific flight
-            public Airline GetAirlineFromFlight(Flight flight)
+        // Get the airline associated with a specific flight
+        public Airline GetAirlineFromFlight(Flight flight)
+        {
+            if (flight == null || string.IsNullOrEmpty(flight.FlightNumber) || !Flights.ContainsKey(flight.FlightNumber))
             {
-                if (flight == null || !Flights.ContainsKey(flight.FlightNumber))
-                {
-                    return null;
-                }
-
-                string airlineName = flight.FlightNumber;
-                return Airline.ContainsKey(airlineName) ? Airlines[airlineName] : null;
+                return null;
             }
 
-            // Print airline fees
-            public void PrintAirlineFees()
+            // Extract the airline code directly within the method
+            string airlineCode = flight.FlightNumber.Substring(0, 2).ToUpper();
+
+            // Check if the airline code exists in the Airlines dictionary
+            return Airlines.ContainsKey(airlineCode) ? Airlines[airlineCode] : null;
+        }
+
+
+        // Print airline fees
+        public void PrintAirlineFees()
             {
                 Console.WriteLine("Airline Fees:");
                 foreach (var gateFee in GateFees)
