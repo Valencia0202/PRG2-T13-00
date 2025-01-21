@@ -74,9 +74,11 @@ internal class Program
             string origin = lines[1];
             string dest = lines[2];
             DateTime datetime = Convert.ToDateTime(lines[3]);
+            //create new flight object
             Flight flight = new Flight(flightno,origin,dest,datetime,"On Time");
             flightdict.Add(flight.FlightNumber,flight);
         }
+        // print contents of dictionary
         foreach(var item in flightdict)
         {
             Console.Write("{0}\n        {1}\n",item.Key,item.Value);
