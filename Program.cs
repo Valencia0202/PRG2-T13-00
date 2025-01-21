@@ -24,7 +24,7 @@ internal class Program
         }
         foreach(var item in flightdict)
         {
-            Console.Write("{0} {1}",item.Key,item.Value);
+            Console.Write("{0}\n        {1}\n",item.Key,item.Value);
         }
 
 
