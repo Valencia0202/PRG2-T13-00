@@ -1,8 +1,8 @@
 ﻿using PRG2_T13_00;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-// Valencia features 2, 3, 5, 6 & 9, 
-// Zhe Ling features 1, 4, 7 & 8.  
+// Zhe Ling features 2, 3, 5, 6 & 9, 
+// Valencia features 1, 4, 7 & 8.  
 internal class Program
 {
     static void Main(string[] args)
