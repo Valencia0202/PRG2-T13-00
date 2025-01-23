@@ -83,16 +83,6 @@ internal class Program
 
         }
 
-        while (true)
-        {
-            Console.Write("Please select your option: ");
-            string option = Console.ReadLine();
-            if (option = "1")
-            {
-                Console.WriteLine("");
-            }
-        }
-
     }
 
 
@@ -146,12 +136,15 @@ internal class Program
 
         // 7)	Display full flight details from an airline(V)
 
+
+
+
         // 8)	Modify flight details(V)
 
 
 
         //9	Validations (and feedback)
-    }
+    
 }
 
 
