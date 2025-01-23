@@ -172,9 +172,7 @@ internal class Program
         void Createflight()
         {
             while (true)
-            {
-
-                
+            {    
                 Console.Write("Flight Number:");
                 var flightno = Console.ReadLine();
                 Console.Write("Origin: ");
@@ -220,24 +218,23 @@ internal class Program
                     {
                         if (code == "None")
                         {
-                            flightdetails = $"{f.Value.FlightNumber},{f.Value.Origin},{f.Value.Destination},{f.Value.ExpectedTime}";
+                            flightdetails = $"{f.Value.FlightNumber},{f.Value.Origin},{f.Value.Destination},{f.Value.ExpectedTime.ToString("h:mm tt")}";
                         }
                         else
                         {
-                            flightdetails = $"{f.Value.FlightNumber},{f.Value.Origin},{f.Value.Destination},{f.Value.ExpectedTime},{code}";
+                            flightdetails = $"{f.Value.FlightNumber},{f.Value.Origin},{f.Value.Destination},{f.Value.ExpectedTime.ToString("h:mm tt")},{code}";
 
                         }
                     }
                     sw.WriteLine(flightdetails);
-                    
 
                 }
                 Console.WriteLine("Flight" + flightno + "has been added !");
+                //prompt user to add another flight
                 Console.Write("Would you like to add another flight? (Y/N)");
                 string add = Console.ReadLine().ToUpper();
                 if (add == "N")
                 {
-                    Console.WriteLine("Flight(s) have been successfully added.");
                     break;
                 }
 
