@@ -47,7 +47,7 @@ internal class Program
             // add the Boarding Gate objects into a Boarding Gate dictionary
             BGDict.Add(gateName, boardingGate);
         }
-        listBG(BGDict);
+
 
         // 2)	Load files (flights)
         string[] csvlines = File.ReadAllLines("Flights.csv");
@@ -60,12 +60,12 @@ internal class Program
             string dest = lines[2];
             DateTime datetime = Convert.ToDateTime(lines[3]);
             //create new flight object
-            Flight flight = new Flight(flightno,origin,dest,datetime,"On Time");
-            flightdict.Add(flight.FlightNumber,flight);
+            Flight flight = new Flight(flightno, origin, dest, datetime, "On Time");
+            flightdict.Add(flight.FlightNumber, flight);
         }
 
         // print contents of dictionary
-     
+
         //menu printing
         void displaymenu()
         {
@@ -82,6 +82,20 @@ internal class Program
             Console.WriteLine("0. Exit");
 
         }
+
+        while (true)
+        {
+            Console.Write("Please select your option: ");
+            string option = Console.ReadLine();
+            if (option = "1")
+            {
+                Console.WriteLine("");
+            }
+        }
+
+    }
+
+
         // 3)	List all flights with their basic information
         void displayflights()
         {
@@ -89,22 +103,30 @@ internal class Program
             Console.WriteLine("List of Flights for Changi Airport Terminal 5");
             string[] heading = csvlines[0].Split(",");
             Console.WriteLine("=============================================");
-            Console.WriteLine("{0,10} {1,15} {2,20} {3,10} {4,10}",heading[0],"Airline Name", heading[1], heading[2], heading[3]);
-            foreach(var flight in  flightdict)
-            {
-                var flightcode = flight.Key.Split(' ')[0];
-                var fname = airlineDict[flightcode].Name;
-                Console.WriteLine("{0,-10} {1,15} {2,20} {3,10} {4,10}",flight.Key,fname,flight.Value.Origin,flight.Value.Destination,flight.Value.ExpectedTime);
-                
-            }
+            // Adjusted column widths for better formatting
+            Console.WriteLine("{0,-15} {1,-25} {2,-20} {3,-20} {4,-20}", heading[0], "Airline Name", heading[1], heading[2], heading[3]);
 
+            // Loop through each flight in flightdict and print the details
+            foreach (var flight in flightdict)
+            {
+                // Extract the airline code (e.g., "SQ" from "SQ 115")
+                var flightcode = flight.Key.Split(' ')[0];
+                // Retrieve the airline name using the airline code
+                var fname = airlineDict.ContainsKey(flightcode) ? airlineDict[flightcode].Name : "Unknown Airline";
+
+                // Print the flight details
+                Console.WriteLine("{0,-15} {1,-25} {2,-20} {3,-20} {4,-20}", flight.Key, fname, flight.Value.Origin, flight.Value.Destination, flight.Value.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"));
+            }
         }
-        displayflights();
+
+        
+       displayflights();
 
         // 4)	Assign a boarding gate to a flight
 
 
         // 5)	Create a new flight
+
         // 4)	List all boarding gates(V)
         static void listBG(Dictionary<string, BoardingGate> bGDict)
         {
