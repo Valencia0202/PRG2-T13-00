@@ -1,4 +1,6 @@
-﻿using PRG2_T13_00;
+﻿using Microsoft.VisualBasic;
+using PRG2_T13_00;
+using System.Collections.Generic;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 // Zhe Ling features 2, 3, 5, 6 & 9, 
@@ -26,6 +28,7 @@ internal class Program
 
             airlineDict[airlineCode] = airline; // add the Airlines objects into an Airline Dictionary
         }
+
         //	load the boardinggates.csv file
         string[] csvlinesBG = File.ReadAllLines("boardinggates.csv");
         Dictionary<string, BoardingGate> BGDict = new Dictionary<string, BoardingGate>();
@@ -44,25 +47,7 @@ internal class Program
             // add the Boarding Gate objects into a Boarding Gate dictionary
             BGDict.Add(gateName, boardingGate);
         }
-
-
-        // Optional: Print the dictionary to verify
-        Console.WriteLine("Boarding Gates:");
-        foreach (var item in BGDict)
-        {
-            Console.WriteLine($"Gate: {item.Value.GateName}, CFFT: {item.Value.SupportsCFFT}, DDJB: {item.Value.SupportsDDJB}, LWTT: {item.Value.SupportsLWTT}");
-        }
-
-
-        // Print the contents of the Airline dictionary
-        Console.WriteLine("Airlines:");
-        foreach (var item in airlineDict)
-        {
-            Console.WriteLine($"Name: {item.Value.Name}, Code: {item.Value.Code}");
-        }
-
-
-
+        listBG(BGDict);
 
         // 2)	Load files (flights)
         string[] csvlines = File.ReadAllLines("Flights.csv");
@@ -78,6 +63,7 @@ internal class Program
             Flight flight = new Flight(flightno,origin,dest,datetime,"On Time");
             flightdict.Add(flight.FlightNumber,flight);
         }
+
         // print contents of dictionary
      
         //menu printing
@@ -96,7 +82,6 @@ internal class Program
             Console.WriteLine("0. Exit");
 
         }
-
         // 3)	List all flights with their basic information
         void displayflights()
         {
@@ -120,16 +105,26 @@ internal class Program
 
 
         // 5)	Create a new flight
+        // 4)	List all boarding gates(V)
+        static void listBG(Dictionary<string, BoardingGate> bGDict)
+        {
+            Console.WriteLine($"{"GateName",-15}{"DDJB",-20}{"CFFT",-20}{"LWTT",-20}");
+            foreach (var item in bGDict)
+            {
+
+                Console.WriteLine($"{item.Value.GateName,-15}{item.Value.SupportsDDJB,-20}{item.Value.SupportsCFFT,-20}{item.Value.SupportsLWTT,-20}");
+            }
+        }
+
+        // 5)	Assign a boarding gate to a flight
 
 
-        // 6)	Display full flight details from an airline
-
-        // 7)	Modify flight details
+        // 6)	Create a new flight
 
 
-        //8)	 Display scheduled flights in chronological order, with boarding gates assignments where applicable
+        // 7)	Display full flight details from an airline(V)
 
-
+        // 8)	Modify flight details(V)
 
 
 
@@ -137,3 +132,5 @@ internal class Program
     }
 }
 
+
+    //5	Assign a boarding gate to a flight (ZL)
