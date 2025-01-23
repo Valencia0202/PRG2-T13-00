@@ -79,10 +79,7 @@ internal class Program
             flightdict.Add(flight.FlightNumber,flight);
         }
         // print contents of dictionary
-        foreach(var item in flightdict)
-        {
-            Console.Write(item.Value);
-        }
+     
         //menu printing
         void displaymenu()
         {
