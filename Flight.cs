@@ -40,7 +40,7 @@ namespace PRG2_T13_00
         }
         public override string ToString()
         {
-            return "FlightNumber:" + FlightNumber + "\tOrigin:" + Origin + "\tDestination:" + Destination + "\tExpected Time:" + ExpectedTime.ToString("t");
+            return $"FlightNumber:{FlightNumber:10} \tOrigin:{Origin:10}  \tDestination:{Destination:10}  \tExpected Time: {ExpectedTime.ToString("MM/dd/yyyy h:mm tt"):10}";
         }
     }
 }

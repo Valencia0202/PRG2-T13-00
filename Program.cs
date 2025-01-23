@@ -7,7 +7,7 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        // 1)	Load files (airlines and boarding gates)
+        // 1)	Load files (airlines and boarding gates)a
         //load the airlines.csv file
         string[] csvlinesAirline = File.ReadAllLines("airlines.csv");
         Dictionary<string, Airline> airlineDict = new Dictionary<string, Airline>();
@@ -81,7 +81,7 @@ internal class Program
         // print contents of dictionary
         foreach(var item in flightdict)
         {
-            Console.Write("{0}\n        {1}\n",item.Key,item.Value);
+            Console.Write(item.Value);
         }
 
         // 3)	List all flights with their basic information
