@@ -112,7 +112,20 @@ internal class Program
             }
         }
 
-
+        //while (true)
+        //{
+        //    displaymenu();
+        //    Console.Write("Please select your option: ");
+        //    string option = Console.ReadLine();
+        //    if (option == "1")
+        //    {
+        //        displayflights();
+        //    }
+        //    else if (option =="2")
+        //    {
+        //        listBG(BGDict);
+        //    }
+        //}
 
 
 
@@ -129,6 +142,7 @@ internal class Program
             // Loop through each flight in flightdict and print the details
             foreach (var flight in flightdict)
             {
+            
                 // Extract the airline code (e.g., "SQ" from "SQ 115")
                 var flightcode = flight.Key.Split(' ')[0];
                 // Retrieve the airline name using the airline code
@@ -137,21 +151,21 @@ internal class Program
                 // Print the flight details
                 Console.WriteLine("{0,-15} {1,-25} {2,-20} {3,-20} {4,-20}", flight.Key, fname, flight.Value.Origin, flight.Value.Destination, flight.Value.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"));
             }
-            displayflights();
-
         }
-    }
-    // 4)	List all boarding gates(V)
-    static void DisplayBG(Dictionary<string, BoardingGate> BGDict)
-    {
-        Console.WriteLine($"{"GateName",-15}{"DDJB",-20}{"CFFT",-20}{"LWTT",-20}");
-        foreach (var item in BGDict)
+
+        
+       displayflights();
+
+        // 4)	List all boarding gates(V)
+        static void listBG(Dictionary<string, BoardingGate> bGDict)
         {
+            Console.WriteLine($"{"GateName",-15}{"DDJB",-20}{"CFFT",-20}{"LWTT",-20}");
+            foreach (var item in bGDict)
+            {
 
-            Console.WriteLine($"{item.Value.GateName,-15}{item.Value.SupportsDDJB,-20}{item.Value.SupportsCFFT,-20}{item.Value.SupportsLWTT,-20}");
+                Console.WriteLine($"{item.Value.GateName,-15}{item.Value.SupportsDDJB,-20}{item.Value.SupportsCFFT,-20}{item.Value.SupportsLWTT,-20}");
+            }
         }
-        DisplayBG(BGDict);
-    }
 
     // 5)	Assign a boarding gate to a flight
     static void AssignBG(Dictionary<string, Flight> flightDict, Dictionary<string, BoardingGate> bgDict)
@@ -242,7 +256,7 @@ internal class Program
         }
     }
 
-    // 6)	Create a new flight
+        // 6)	Create a new flight
 
 
     // 7)	Display full flight details from an airline(V)
