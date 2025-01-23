@@ -24,7 +24,7 @@ internal class Program
                 Code = airlineCode
             };
 
-            airlineDict[airlineName] = airline; // add the Airlines objects into an Airline Dictionary
+            airlineDict[airlineCode] = airline; // add the Airlines objects into an Airline Dictionary
         }
         //	load the boardinggates.csv file
         string[] csvlinesBG = File.ReadAllLines("boardinggates.csv");
@@ -83,9 +83,41 @@ internal class Program
         {
             Console.Write(item.Value);
         }
+        //menu printing
+        void displaymenu()
+        {
+            Console.WriteLine("=============================================");
+            Console.WriteLine("Welcome to Changi Airport Terminal 5");
+            Console.WriteLine("=============================================");
+            Console.WriteLine("1. List All Flights");
+            Console.WriteLine("2. List Boarding Gates");
+            Console.WriteLine("3. Assign a Boarding Gate to a Flight");
+            Console.WriteLine("4. Create Flight");
+            Console.WriteLine("5. Display Airline Flights");
+            Console.WriteLine("6. Modify Flight Details");
+            Console.WriteLine("7. Display Flight Schedule");
+            Console.WriteLine("0. Exit");
+
+        }
 
         // 3)	List all flights with their basic information
+        void displayflights()
+        {
+            Console.WriteLine("=============================================");
+            Console.WriteLine("List of Flights for Changi Airport Terminal 5");
+            string[] heading = csvlines[0].Split(",");
+            Console.WriteLine("=============================================");
+            Console.WriteLine("{0,10} {1,15} {2,20} {3,10} {4,10}",heading[0],"Airline Name", heading[1], heading[2], heading[3]);
+            foreach(var flight in  flightdict)
+            {
+                var flightcode = flight.Key.Split(' ')[0];
+                var fname = airlineDict[flightcode].Name;
+                Console.WriteLine("{0,-10} {1,15} {2,20} {3,10} {4,10}",flight.Key,fname,flight.Value.Origin,flight.Value.Destination,flight.Value.ExpectedTime);
+                
+            }
 
+        }
+        displayflights();
 
         // 4)	Assign a boarding gate to a flight
 
