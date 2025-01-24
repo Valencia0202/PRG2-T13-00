@@ -85,7 +85,7 @@ internal class Program
                         displayflights();
                         break;
                     case "2":
-                        DisplayBG(BGDict);
+                        listBG(BGDict);
                         break;
                     case "3":
                         AssignBG(flightdict, BGDict);
@@ -157,7 +157,7 @@ internal class Program
        displayflights();
 
         // 4)	List all boarding gates(V)
-        static void listBG(Dictionary<string, BoardingGate> bGDict)
+        static void ListBG(Dictionary<string, BoardingGate> bGDict)
         {
             Console.WriteLine($"{"GateName",-15}{"DDJB",-20}{"CFFT",-20}{"LWTT",-20}");
             foreach (var item in bGDict)
@@ -165,6 +165,7 @@ internal class Program
 
                 Console.WriteLine($"{item.Value.GateName,-15}{item.Value.SupportsDDJB,-20}{item.Value.SupportsCFFT,-20}{item.Value.SupportsLWTT,-20}");
             }
+            ListBG(bGDict);
         }
 
     // 5)	Assign a boarding gate to a flight
