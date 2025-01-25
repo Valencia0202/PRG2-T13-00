@@ -73,6 +73,11 @@ internal class Program
             // Load the data as you already have
             // Airline, BoardingGate, and Flight dictionaries
 
+        }
+            else if (code == "LWTT")
+        {
+            Flight flight3 = new LWTTFlight(flightno, origin, dest, datetime, "On Time", 500.00);
+            flightdict.Add(flight3.FlightNumber, flight3);
             while (true)
             {
                 displaymenu();
