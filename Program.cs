@@ -2,7 +2,6 @@
 using PRG2_T13_00;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Metrics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 // Zhe Ling features 2, 3, 5, 6 & 9, 
@@ -11,7 +10,6 @@ internal class Program
 {
     static void Main(string[] args)
     {
-
         // 1)	Load files (airlines and boarding gates)a
         //load the airlines.csv file
         string[] csvlinesAirline = File.ReadAllLines("airlines.csv");
@@ -64,18 +62,15 @@ internal class Program
             DateTime datetime = Convert.ToDateTime(lines[3]);
             string code = lines[4];
             //create new flight object
-            Flight flight = new Flight(flightno, origin, dest, datetime, "On Time");
-            flightdict.Add(flight.FlightNumber, flight);
-            //add to self created dict or the dict in airline class
-        }
-
-        // print contents of dictionary
-
-        //menu printing
-        static void Main(string[] args)
-        {
-            // Load the data as you already have
-            // Airline, BoardingGate, and Flight dictionaries
+            if (code == "DDJB")
+            {
+                Flight flight = new DDJBFlight(flightno, origin, dest, datetime, "On Time", 300.00);
+                flightdict.Add(flight.FlightNumber, flight);
+            }
+            else if (code == "CFFT")
+            {
+                Flight flight2 = new CFFTFlight(flightno, origin, dest, datetime, "On Time", 150.00);
+                flightdict.Add(flight2.FlightNumber, flight2);
 
             }
             else if (code == "LWTT")
@@ -95,7 +90,6 @@ internal class Program
 
         // print contents of dictionary
 
-
         //menu printing
         void Displaymenu()
         {
@@ -112,6 +106,21 @@ internal class Program
             Console.WriteLine("0. Exit");
 
         }
+
+        //while (true)
+        //{
+        //    displaymenu();
+        //    Console.Write("Please select your option: ");
+        //    string option = Console.ReadLine();
+        //    if (option == "1")
+        //    {
+        //        displayflights();
+        //    }
+        //    else if (option =="2")
+        //    {
+        //        listBG(BGDict);
+        //    }
+        //}
 
 
 
@@ -153,64 +162,140 @@ internal class Program
                 Console.WriteLine($"{item.Value.GateName,-15}{item.Value.SupportsDDJB,-20}{item.Value.SupportsCFFT,-20}{item.Value.SupportsLWTT,-20}");
             }
         }
+        listBG(BGDict);
 
         // 5)	Assign a boarding gate to a flight
-  
 
-        //// 6)	Create a new flight
 
-        void createflight()
+        // 6)	Create a new flight
+
+        void Createflight()
         {
-            void addflight()
-            {
-                Console.WriteLine("Enter new flight (Flight Number, Origin, Destination, and Expected Departure/Arrival Time) ");
-                var flight = Console.ReadLine();
-                Console.WriteLine("Would you like to enter any special request code? Y/N");
-                string ans = Console.ReadLine();
-                if (ans == "Y")
-                {
-
-                }
-                else { }
-                string[] flightinfo = flight.Split(',');
-                DateTime ET = Convert.ToDateTime(flightinfo[3]);
-                Flight flight1 = new Flight(flightinfo[0], flightinfo[1], flightinfo[2], ET, "On Time");
-                flightdict.Add(flightinfo[0], flight1);
-                //append new info to csv file
-            }
             while (true)
             {
-                addflight();
-                Console.WriteLine("Would you like to add another flight? Y/N");
-                string add = Console.ReadLine();
-                if (add == "Y")
+                Console.Write("Flight Number:");
+                var flightno = Console.ReadLine();
+                Console.Write("Origin: ");
+                string origin = Console.ReadLine();
+                Console.Write("Destination:");
+                string dest = Console.ReadLine();
+                Console.Write("Enter Expected Departure/Arrival Time (dd/mm/yyyy hh:mm):");
+                DateTime ET = Convert.ToDateTime(Console.ReadLine());
+                Console.WriteLine("Enter Special Request Code (CFFT/DDJB/LWTT/None):");
+                string code = Console.ReadLine();
+
+                Airline airline = new Airline();
+                if (code == "None")
                 {
-                    createflight();
+                    Flight flights = new NORMFlight(flightno, origin, dest, ET, "On Time");
+                    airline.AddFlight(flights);
                 }
-                else
+
+                else if (code == "DDJB")
                 {
-                    Console.WriteLine("Flight(s) have been successfully added.");
+                    Flight flights = new DDJBFlight(flightno, origin, dest, ET, "On Time", 300.00);
+                    airline.AddFlight(flights);
+                }
+                else if (code == "CFFT")
+                {
+                    Flight flights = new CFFTFlight(flightno, origin, dest, ET, "On Time", 150.00);
+                    airline.AddFlight(flights);
+
+                }
+                else if (code == "LWTT")
+                {
+                    Flight flights = new LWTTFlight(flightno, origin, dest, ET, "On Time", 500.00);
+                    airline.AddFlight(flights);
+
+                }
+
+                //append new info to csv file
+                using (StreamWriter sw = new StreamWriter("flights.csv", true))
+                {
+                    Dictionary<string, Flight> flightdict = airline.Flights;
+                    string flightdetails = "";
+                    foreach (var f in flightdict)
+                    {
+                        if (code == "None")
+                        {
+                            flightdetails = $"{f.Value.FlightNumber},{f.Value.Origin},{f.Value.Destination},{f.Value.ExpectedTime.ToString("h:mm tt")}";
+                        }
+                        else
+                        {
+                            flightdetails = $"{f.Value.FlightNumber},{f.Value.Origin},{f.Value.Destination},{f.Value.ExpectedTime.ToString("h:mm tt")},{code}";
+
+                        }
+                    }
+                    sw.WriteLine(flightdetails);
+
+                }
+                Console.WriteLine("Flight" + flightno + "has been added !");
+                //prompt user to add another flight
+                Console.Write("Would you like to add another flight? (Y/N)");
+                string add = Console.ReadLine().ToUpper();
+                if (add == "N")
+                {
                     break;
                 }
-            }
-
-        }
 
             }
-            else if (opt == 2)
-            {
-                
-            }
-       
         }
 
 
+        // 7)	Display full flight details from an airline(V)
+        void DisplayAirlineFlight()
+        {
+                Console.WriteLine("=============================================");
+                Console.WriteLine("List of Airlines for Changi Airport Terminal 5");
+                Console.WriteLine("=============================================");
+                Console.WriteLine($"{"Airline Code",-15}{"Airline Name",-20}");
+                foreach (var airline in airlineDict.Values)
+                {
+                    // Print airline code and name
+                    Console.WriteLine($"{airline.Code,-15}{airline.Name,-20}");
+                }
+
+                Console.Write("Enter Airline Code: ");
+                string airlineOpt = Console.ReadLine().ToUpper();
+                if (!airlineDict.ContainsKey(airlineOpt))
+                {
+                    Console.WriteLine("Invalid airline code. Please try again.");
+                }
+
+                // Get the airline object
+                Airline selectedAirline = airlineDict[airlineOpt];
+            Console.WriteLine("=============================================");
+            Console.WriteLine($"Flights for {selectedAirline.Name} ");
+            Console.WriteLine("=============================================");
+
+            Console.WriteLine($"{"Flight Number",-15}{"Origin",-20}{"Destination",-20}{"Expected Time",-25}");
+
+                // Filter and display flights operated by the selected airline
+                foreach (var flight in flightdict.Values)
+                {
+                    if (flight.FlightNumber.StartsWith(airlineOpt))
+                    {
+                        Console.WriteLine($"{flight.FlightNumber,-15}{flight.Origin,-20}{flight.Destination,-20}{flight.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}");
+                    }
+                }
+            }
+        
+
+        DisplayAirlineFlight();
+
+
+        // 8)	Modify flight details(V)
 
 
 
         //9	Validations (and feedback)
 
-    }
-}
 
-    //5	Assign a boarding gate to a flight (ZL)
+
+
+
+        //5	Assign a boarding gate to a flight (ZL)
+
+    }
+
+}
