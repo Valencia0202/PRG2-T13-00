@@ -69,21 +69,25 @@ internal class Program
             }
             else if (code == "CFFT")
             {
-                Flight flight2 = new CFFTFlight(flightno, origin, dest, datetime, "On Time", 150.00);
-                flightdict.Add(flight2.FlightNumber, flight2);
+                Flight flight = new CFFTFlight(flightno, origin, dest, datetime, "On Time", 150.00);
+                flightdict.Add(flight.FlightNumber, flight);
 
             }
             else if(code == "LWTT")
             {
-                Flight flight3 = new LWTTFlight(flightno, origin, dest, datetime, "On Time", 500.00);
-                flightdict.Add(flight3.FlightNumber, flight3);
+                Flight flight = new LWTTFlight(flightno, origin, dest, datetime, "On Time", 500.00);
+                flightdict.Add(flight.FlightNumber, flight);
 
             }
             else
             {
-                Flight flight4 = new NORMFlight(flightno, origin, dest, datetime, "On Time");
-                flightdict.Add(flight4.FlightNumber, flight4);
+                Flight flight = new NORMFlight(flightno, origin, dest, datetime, "On Time");
+                flightdict.Add(flight.FlightNumber, flight);
 
+            }
+            foreach(var f in flightdict)
+            {
+                Console.WriteLine("{0} {1}",f.Key, f.Value);
             }
 
         }
@@ -165,6 +169,156 @@ internal class Program
         listBG(BGDict);
 
         // 5)	Assign a boarding gate to a flight
+        static void AssignBG(Dictionary<string, Flight> flightDict, Dictionary<string, BoardingGate> bgDict)
+        {
+            while (true)
+            {
+                Console.WriteLine("Enter Flight Number: ");
+                string flightno = Console.ReadLine();
+                if (!flightDict.ContainsKey(flightno))
+                {
+                    Console.WriteLine("Flight not found. Please try again.");
+                    continue;
+                }
+                Flight flight = flightDict[flightno];
+                Console.WriteLine($"Flight Number: {flight.FlightNumber}");
+                Console.WriteLine($"Origin: {flight.Origin}");
+                Console.WriteLine($"Destination: {flight.Destination}");
+                Console.WriteLine($"Expected Time: {flight.ExpectedTime}");
+                string code = "";
+                if (flight is CFFTFlight)
+                {
+                    code = "CFFT";
+                }
+                else if (flight is LWTTFlight)
+                {
+                    code = "LWTT";
+                }
+                else if (flight is CFFTFlight)
+                {
+                    code = "CFFT";
+                }
+                else
+                {
+                    code = "None";
+                }
+                Console.WriteLine($"Special Request Code: {code}");
+
+                //whiletrue
+                Console.WriteLine("Enter Boarding Gate: ");
+                string boardingGateName = Console.ReadLine();
+                if (!bgDict.ContainsKey(boardingGateName))
+                {
+                    Console.WriteLine("Invalid Boarding Gate. Please try again.");
+                    continue;
+                }
+                // add boarding gate to flight
+
+                BoardingGate boardingGate = bgDict[boardingGateName];
+                if (boardingGate.Flight != null)
+                {
+                    Console.WriteLine($"The Boarding Gate {boardingGateName} is already assigned to Flight {boardingGate.AssignedFlight}.");
+                    continue;
+                }
+                boardingGate.Flight = flight.FlightNumber;
+                flight.BoardingGate = boardingGateName;
+            }
+        }
+     
+
+        // 6)	Create a new flight
+
+        void Createflight()
+        {
+            while (true)
+            {    
+                Console.Write("Flight Number:");
+                var flightno = Console.ReadLine();
+
+                Console.Write("Origin: ");
+                string origin = Console.ReadLine();
+                Console.Write("Destination:");
+                string dest = Console.ReadLine();
+                Console.Write("Enter Expected Departure/Arrival Time (dd/mm/yyyy hh:mm):");
+                DateTime ET = Convert.ToDateTime(Console.ReadLine());
+                Console.WriteLine("Enter Special Request Code (CFFT/DDJB/LWTT/None):");
+                string code = Console.ReadLine();
+                
+                Airline airline = new Airline();
+                if (code == "None")
+                {
+                    Flight flights = new NORMFlight(flightno, origin, dest, ET, "On Time");
+                    airline.AddFlight(flights);
+                }
+
+                else if (code == "DDJB")
+                {
+                    Flight flights = new DDJBFlight(flightno, origin, dest, ET, "On Time", 300.00);
+                    airline.AddFlight(flights);
+                }
+                else if (code == "CFFT")
+                {
+                    Flight flights = new CFFTFlight(flightno, origin, dest, ET, "On Time", 150.00);
+                    airline.AddFlight(flights);
+
+                }
+                else if (code == "LWTT")
+                {
+                    Flight flights = new LWTTFlight(flightno, origin, dest, ET, "On Time", 500.00);
+                    airline.AddFlight(flights);
+
+                }
+
+                //append new info to csv file
+                using (StreamWriter sw = new StreamWriter("flights.csv", true))
+                {
+                    Dictionary<string, Flight> flightdict = airline.Flights;
+                    string flightdetails = "";
+                    foreach (var f in flightdict)
+                    {
+                        if (code == "None")
+                        {
+                            flightdetails = $"{f.Value.FlightNumber},{f.Value.Origin},{f.Value.Destination},{f.Value.ExpectedTime.ToString("h:mm tt")}";
+                        }
+                        else
+                        {
+                            flightdetails = $"{f.Value.FlightNumber},{f.Value.Origin},{f.Value.Destination},{f.Value.ExpectedTime.ToString("h:mm tt")},{code}";
+
+                        }
+                    }
+                    sw.WriteLine(flightdetails);
+
+                }
+                Console.WriteLine("Flight" + flightno + "has been added !");
+                //prompt user to add another flight
+                Console.Write("Would you like to add another flight? (Y/N)");
+                string add = Console.ReadLine().ToUpper();
+                if (add == "N")
+                {
+                    break;
+                }
+
+            }
+        }
+
+        Createflight();
+
+        // 7)	Display full flight details from an airline(V)
+
+
+
+
+        // 8)	Modify flight details(V)
+
+
+
+        //9	Validations (and feedback)
+
+
+
+
+
+        //5	Assign a boarding gate to a flight (ZL)
         static void AssignBG(Dictionary<string, Flight> flightDict, Dictionary<string, BoardingGate> bgDict)
         {
             while (true)
@@ -252,100 +406,6 @@ internal class Program
                 break;
             }
         }
-
-        // 6)	Create a new flight
-
-        void Createflight()
-        {
-            while (true)
-            {    
-                Console.Write("Flight Number:");
-                var flightno = Console.ReadLine();
-                Console.Write("Origin: ");
-                string origin = Console.ReadLine();
-                Console.Write("Destination:");
-                string dest = Console.ReadLine();
-                Console.Write("Enter Expected Departure/Arrival Time (dd/mm/yyyy hh:mm):");
-                DateTime ET = Convert.ToDateTime(Console.ReadLine());
-                Console.WriteLine("Enter Special Request Code (CFFT/DDJB/LWTT/None):");
-                string code = Console.ReadLine();
-                
-                Airline airline = new Airline();
-                if (code == "None")
-                {
-                    Flight flights = new NORMFlight(flightno, origin, dest, ET, "On Time");
-                    airline.AddFlight(flights);
-                }
-
-                else if (code == "DDJB")
-                {
-                    Flight flights = new DDJBFlight(flightno, origin, dest, ET, "On Time", 300.00);
-                    airline.AddFlight(flights);
-                }
-                else if (code == "CFFT")
-                {
-                    Flight flights = new CFFTFlight(flightno, origin, dest, ET, "On Time", 150.00);
-                    airline.AddFlight(flights);
-
-                }
-                else if (code == "LWTT")
-                {
-                    Flight flights = new LWTTFlight(flightno, origin, dest, ET, "On Time", 500.00);
-                    airline.AddFlight(flights);
-
-                }
-
-                //append new info to csv file
-                using (StreamWriter sw = new StreamWriter("flights.csv", true))
-                {
-                    Dictionary<string, Flight> flightdict = airline.Flights;
-                    string flightdetails = "";
-                    foreach (var f in flightdict)
-                    {
-                        if (code == "None")
-                        {
-                            flightdetails = $"{f.Value.FlightNumber},{f.Value.Origin},{f.Value.Destination},{f.Value.ExpectedTime.ToString("h:mm tt")}";
-                        }
-                        else
-                        {
-                            flightdetails = $"{f.Value.FlightNumber},{f.Value.Origin},{f.Value.Destination},{f.Value.ExpectedTime.ToString("h:mm tt")},{code}";
-
-                        }
-                    }
-                    sw.WriteLine(flightdetails);
-
-                }
-                Console.WriteLine("Flight" + flightno + "has been added !");
-                //prompt user to add another flight
-                Console.Write("Would you like to add another flight? (Y/N)");
-                string add = Console.ReadLine().ToUpper();
-                if (add == "N")
-                {
-                    break;
-                }
-
-            }
-        }
-
-        Createflight();
-
-        // 7)	Display full flight details from an airline(V)
-
-
-
-
-        // 8)	Modify flight details(V)
-
-
-
-        //9	Validations (and feedback)
-
-    
-
-
-    
-        //5	Assign a boarding gate to a flight (ZL)
-
     }
 
 }
