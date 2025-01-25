@@ -35,7 +35,6 @@ namespace PRG2_T13_00
             return $"Name: {GateName}\n" +
                    $"CFFT: {SupportsCFFT}\n" +
                    $"DDJB:  {SupportsDDJB}\n" +
-                   CalculateFees() +
                    $"LWTT: {SupportsLWTT}";
         }
     }
