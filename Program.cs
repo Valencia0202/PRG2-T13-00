@@ -234,9 +234,11 @@ internal class Program
                         Console.WriteLine("2. Boarding");
                         Console.WriteLine("3. On Time");
                         Console.WriteLine("Please select the new status of the flight:");
-                        int statusOption;
+                        int statusOption; // user input stored
+                        // read and convert users input into integer, tryparse to ensure program dos not crash due to invalid user input
                         if (int.TryParse(Console.ReadLine(), out statusOption))
                         {
+                            // evaluate status option and perform the cases
                             switch (statusOption)
                             {
                                 case 1:
@@ -263,7 +265,6 @@ internal class Program
             }
             
         }
-
         AssignBG(flightdict, BGDict);
         // 6)	Create a new flight
 
@@ -271,12 +272,12 @@ internal class Program
         {
             while (true)
             {    
-                Console.Write("Flight Number:");
+                Console.Write("Enter Flight Number:");
                 var flightno = Console.ReadLine();
 
-                Console.Write("Origin: ");
+                Console.Write("Enter Origin: ");
                 string origin = Console.ReadLine();
-                Console.Write("Destination:");
+                Console.Write("Enter Destination:");
                 string dest = Console.ReadLine();
                 Console.Write("Enter Expected Departure/Arrival Time (dd/mm/yyyy hh:mm):");
                 DateTime ET = Convert.ToDateTime(Console.ReadLine());
