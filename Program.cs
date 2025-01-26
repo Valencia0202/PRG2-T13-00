@@ -300,7 +300,6 @@ internal class Program
             {    
                 Console.Write("Enter Flight Number:");
                 var flightno = Console.ReadLine();
-
                 Console.Write("Enter Origin: ");
                 string origin = Console.ReadLine();
                 Console.Write("Enter Destination:");
