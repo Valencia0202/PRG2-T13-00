@@ -5,6 +5,15 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
+
+
+
+//==========================================================
+// Student Number	: S10268058
+// Student Name	: Chai Zhe Ling
+// Partner Name	: Valencia Amora Chua Lie Cia
+//==========================================================
+
 // Zhe Ling features 2, 3, 5, 6 & 9, 
 // Valencia features 1, 4, 7 & 8.  
 internal class Program
@@ -368,12 +377,50 @@ internal class Program
 
         Createflight();
 
-    // 7)	Display full flight details from an airline(V)
+        // 7)	Display full flight details from an airline(V)
+
+        void DisplayAirlineFlight()
+        {
+            Console.WriteLine("=============================================");
+            Console.WriteLine("List of Airlines for Changi Airport Terminal 5");
+            Console.WriteLine("=============================================");
+            Console.WriteLine($"{"Airline Code",-15}{"Airline Name",-20}");
+            foreach (var airline in airlineDict.Values)
+            {
+                // Print airline code and name
+                Console.WriteLine($"{airline.Code,-15}{airline.Name,-20}");
+            }
+
+            Console.Write("Enter Airline Code: ");
+            string airlineOpt = Console.ReadLine().ToUpper();
+            if (!airlineDict.ContainsKey(airlineOpt))
+            {
+                Console.WriteLine("Invalid airline code. Please try again.");
+            }
+
+            // Get the airline object
+            Airline selectedAirline = airlineDict[airlineOpt];
+            Console.WriteLine("=============================================");
+            Console.WriteLine($"Flights for {selectedAirline.Name} ");
+            Console.WriteLine("=============================================");
+
+            Console.WriteLine($"{"Flight Number",-15}{"Origin",-20}{"Destination",-20}{"Expected Time",-25}");
+
+            // Filter and display flights operated by the selected airline
+            foreach (var flight in flightdict.Values)
+            {
+                if (flight.FlightNumber.StartsWith(airlineOpt))
+                {
+                    Console.WriteLine($"{flight.FlightNumber,-15}{flight.Origin,-20}{flight.Destination,-20}{flight.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}");
+                }
+            }
+        }
 
 
+        DisplayAirlineFlight();
 
 
-    // 8)	Modify flight details(V)
+        // 8)	Modify flight details(V)
 
 
 
@@ -383,9 +430,9 @@ internal class Program
 
 
 
-        
-            
-        
+
+
+
     }
 
 }
