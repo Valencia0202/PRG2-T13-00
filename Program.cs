@@ -2,7 +2,7 @@
 using PRG2_T13_00;
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
+using System.Diagnostics.Metrics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
@@ -20,6 +20,7 @@ internal class Program
 {
     static void Main(string[] args)
     {
+
         // 1)	Load files (airlines and boarding gates)a
         //load the airlines.csv file
         string[] csvlinesAirline = File.ReadAllLines("airlines.csv");
@@ -110,11 +111,14 @@ internal class Program
             // Load the data as you already have
             // Airline, BoardingGate, and Flight dictionaries
 
-            while (true)
+            }
+            else if (code == "LWTT")
             {
                 Displaymenu();
                 Console.Write("Please select your option: ");
                 string option = Console.ReadLine();
+                Flight flight3 = new LWTTFlight(flightno, origin, dest, datetime, "On Time", 500.00);
+                flightdict.Add(flight3.FlightNumber, flight3);
 
                 switch (option)
                 {
@@ -149,21 +153,6 @@ internal class Program
             }
         }
 
-        //while (true)
-        //{
-        //    displaymenu();
-        //    Console.Write("Please select your option: ");
-        //    string option = Console.ReadLine();
-        //    if (option == "1")
-        //    {
-        //        displayflights();
-        //    }
-        //    else if (option =="2")
-        //    {
-        //        listBG(BGDict);
-        //    }
-        //}
-
 
 
         // 3)	List all flights with their basic information
@@ -192,15 +181,17 @@ internal class Program
         Displayflights();
 
         // 4)	List all boarding gates(V)
-        static void ListBG(Dictionary<string, BoardingGate> bGDict)
+        static void listBG(Dictionary<string, BoardingGate> BGDict)
         {
+            Console.WriteLine("=============================================");
+            Console.WriteLine("List of Borading Gatess for Changi Airport Terminal 5");
+            Console.WriteLine("=============================================");
             Console.WriteLine($"{"GateName",-15}{"DDJB",-20}{"CFFT",-20}{"LWTT",-20}");
-            foreach (var item in bGDict)
+            foreach (var item in BGDict)
             {
 
                 Console.WriteLine($"{item.Value.GateName,-15}{item.Value.SupportsDDJB,-20}{item.Value.SupportsCFFT,-20}{item.Value.SupportsLWTT,-20}");
             }
-            ListBG(bGDict);
         }
 
         // 5)	Assign a boarding gate to a flight
