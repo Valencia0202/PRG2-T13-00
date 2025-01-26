@@ -103,17 +103,17 @@ internal class Program
 
             while (true)
             {
-                displaymenu();
+                Displaymenu();
                 Console.Write("Please select your option: ");
                 string option = Console.ReadLine();
 
                 switch (option)
                 {
                     case "1":
-                        displayflights();
+                        Displayflights();
                         break;
                     case "2":
-                        listBG(BGDict);
+                        ListBG(BGDict);
                         break;
                     case "3":
                         AssignBG(flightdict, BGDict);
