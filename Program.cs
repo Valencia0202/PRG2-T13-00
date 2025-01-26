@@ -358,7 +358,6 @@ internal class Program
 
 
 
-        //5	Assign a boarding gate to a flight (ZL)
         
             
         
