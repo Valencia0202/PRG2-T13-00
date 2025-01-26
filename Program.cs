@@ -75,7 +75,7 @@ internal class Program
             //create new flight object
             if (code == "DDJB")
             {
-                Flight flight = new DDJBFlight(flightno, origin, dest, datetime, "On Time",300.00);
+                Flight flight = new DDJBFlight(flightno, origin, dest, datetime, "On Time", 300.00);
                 flightdict.Add(flight.FlightNumber, flight);
             }
             else if (code == "CFFT")
@@ -84,7 +84,7 @@ internal class Program
                 flightdict.Add(flight.FlightNumber, flight);
 
             }
-            else if(code == "LWTT")
+            else if (code == "LWTT")
             {
                 Flight flight = new LWTTFlight(flightno, origin, dest, datetime, "On Time", 500.00);
                 flightdict.Add(flight.FlightNumber, flight);
@@ -96,9 +96,9 @@ internal class Program
                 flightdict.Add(flight.FlightNumber, flight);
 
             }
-            foreach(var f in flightdict)
+            foreach (var f in flightdict)
             {
-                Console.WriteLine("{0} {1}",f.Key, f.Value);
+                Console.WriteLine("{0} {1}", f.Key, f.Value);
             }
 
         }
@@ -111,14 +111,10 @@ internal class Program
             // Load the data as you already have
             // Airline, BoardingGate, and Flight dictionaries
 
-            }
-            else if (code == "LWTT")
             {
                 Displaymenu();
                 Console.Write("Please select your option: ");
                 string option = Console.ReadLine();
-                Flight flight3 = new LWTTFlight(flightno, origin, dest, datetime, "On Time", 500.00);
-                flightdict.Add(flight3.FlightNumber, flight3);
 
                 switch (option)
                 {
@@ -181,7 +177,7 @@ internal class Program
         Displayflights();
 
         // 4)	List all boarding gates(V)
-        static void listBG(Dictionary<string, BoardingGate> BGDict)
+        static void ListBG(Dictionary<string, BoardingGate> BGDict)
         {
             Console.WriteLine("=============================================");
             Console.WriteLine("List of Borading Gatess for Changi Airport Terminal 5");
@@ -289,7 +285,7 @@ internal class Program
                 }
                 break;
             }
-            
+
         }
         AssignBG(flightdict, BGDict);
         // 6)	Create a new flight
@@ -297,7 +293,7 @@ internal class Program
         void Createflight()
         {
             while (true)
-            {    
+            {
                 Console.Write("Enter Flight Number:");
                 var flightno = Console.ReadLine();
                 Console.Write("Enter Origin: ");
@@ -308,7 +304,7 @@ internal class Program
                 DateTime ET = Convert.ToDateTime(Console.ReadLine());
                 Console.WriteLine("Enter Special Request Code (CFFT/DDJB/LWTT/None):");
                 string code = Console.ReadLine();
-                
+
                 Airline airline = new Airline();
                 if (code == "None")
                 {
@@ -362,8 +358,9 @@ internal class Program
                 {
                     break;
                 }
+                break;
 
-            }
+            } 
         }
 
         Createflight();
@@ -411,6 +408,7 @@ internal class Program
         DisplayAirlineFlight();
 
 
+
         // 8)	Modify flight details(V)
 
 
@@ -425,5 +423,5 @@ internal class Program
 
 
     }
-
 }
+
