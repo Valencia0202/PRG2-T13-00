@@ -2,6 +2,7 @@
 using PRG2_T13_00;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 // Zhe Ling features 2, 3, 5, 6 & 9, 
@@ -97,18 +98,46 @@ internal class Program
         //menu printing
         void Displaymenu()
         {
-            Console.WriteLine("=============================================");
-            Console.WriteLine("Welcome to Changi Airport Terminal 5");
-            Console.WriteLine("=============================================");
-            Console.WriteLine("1. List All Flights");
-            Console.WriteLine("2. List Boarding Gates");
-            Console.WriteLine("3. Assign a Boarding Gate to a Flight");
-            Console.WriteLine("4. Create Flight");
-            Console.WriteLine("5. Display Airline Flights");
-            Console.WriteLine("6. Modify Flight Details");
-            Console.WriteLine("7. Display Flight Schedule");
-            Console.WriteLine("0. Exit");
+            // Load the data as you already have
+            // Airline, BoardingGate, and Flight dictionaries
 
+            while (true)
+            {
+                displaymenu();
+                Console.Write("Please select your option: ");
+                string option = Console.ReadLine();
+
+                switch (option)
+                {
+                    case "1":
+                        displayflights();
+                        break;
+                    case "2":
+                        listBG(BGDict);
+                        break;
+                    case "3":
+                        AssignBG(flightdict, BGDict);
+                        break;
+                    case "4":
+                        // Implement Create Flight functionality
+                        break;
+                    case "5":
+                        // Implement Display Airline Flights functionality
+                        break;
+                    case "6":
+                        // Implement Modify Flight Details functionality
+                        break;
+                    case "7":
+                        // Implement Display Flight Schedule functionality
+                        break;
+                    case "0":
+                        Console.WriteLine("Exiting...");
+                        return; // Exit the program
+                    default:
+                        Console.WriteLine("Invalid option, please try again.");
+                        break;
+                }
+            }
         }
 
         //while (true)
@@ -154,19 +183,16 @@ internal class Program
         Displayflights();
 
         // 4)	List all boarding gates(V)
-        static void listBG(Dictionary<string, BoardingGate> BGDict)
+        static void ListBG(Dictionary<string, BoardingGate> bGDict)
         {
-            Console.WriteLine("=============================================");
-            Console.WriteLine("List of Borading Gatess for Changi Airport Terminal 5");
-            Console.WriteLine("=============================================");
             Console.WriteLine($"{"GateName",-15}{"DDJB",-20}{"CFFT",-20}{"LWTT",-20}");
-            foreach (var item in BGDict)
+            foreach (var item in bGDict)
             {
 
                 Console.WriteLine($"{item.Value.GateName,-15}{item.Value.SupportsDDJB,-20}{item.Value.SupportsCFFT,-20}{item.Value.SupportsLWTT,-20}");
             }
+            ListBG(bGDict);
         }
-        listBG(BGDict);
 
         // 5)	Assign a boarding gate to a flight
         static void AssignBG(Dictionary<string, Flight> flightDict, Dictionary<string, BoardingGate> BGDict)
@@ -343,12 +369,12 @@ internal class Program
 
         Createflight();
 
-        // 7)	Display full flight details from an airline(V)
+    // 7)	Display full flight details from an airline(V)
 
 
 
 
-        // 8)	Modify flight details(V)
+    // 8)	Modify flight details(V)
 
 
 
