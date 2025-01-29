@@ -293,7 +293,7 @@ internal class Program
             Airline selectedAirline = airlineDict[flightmodified];
             Console.WriteLine("1. Modify Flight ");
             Console.WriteLine("2. Delete Flight");
-            Console.Write("Choose an option: ")
+            Console.Write("Choose an option: ");
             int choice = int.Parse(Console.ReadLine());
 
             if (choice == 0) 
