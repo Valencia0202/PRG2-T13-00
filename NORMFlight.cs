@@ -17,6 +17,7 @@ namespace PRG2_T13_00
             }
             return base.CalculateFees();
         }
+        public NORMFlight() { }
         public NORMFlight(string Fn, string o, string d, DateTime ET, string s) : base(Fn, o, d, ET, s) {}
         public override string ToString()
         {

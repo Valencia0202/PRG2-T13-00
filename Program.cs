@@ -360,12 +360,23 @@ void ModifyFlightDetails()
         case "5":
             Console.Write("Enter new Special Request Code (CFFT/DDJB/LWTT/None): ");
             string specialRequest = Console.ReadLine();
-            if (new[] { "CFFT", "DDJB", "LWTT", "None" }.Contains(specialRequest))
+            if (specialRequest =="CFFT")
             {
-                flightToModify.SpecialRequestCode = specialRequest;
+                flightToModify = new CFFTFlight();
                 Console.WriteLine("Special Request Code updated successfully.");
             }
-            else
+            else if(specialRequest == "LWTT")
+                    {
+                        flightToModify = new LWTTFlight();
+                        Console.WriteLine("Special Request Code updated successfully.");
+
+                    }
+            else if(specialRequest == "DDJB")
+                    {
+                        flightToModify = new DDJBFlight();
+                        Console.WriteLine("Special Request Code updated successfully.");
+                    }
+                    else
             {
                 Console.WriteLine("Invalid Special Request Code. Modification canceled.");
             }
