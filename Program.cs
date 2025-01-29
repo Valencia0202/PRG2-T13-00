@@ -96,10 +96,10 @@ internal class Program
                 flightdict.Add(flight.FlightNumber, flight);
 
             }
-            foreach (var f in flightdict)
-            {
-                Console.WriteLine("{0} {1}", f.Key, f.Value);
-            }
+            //foreach (var f in flightdict)
+            //{
+            //    Console.WriteLine("{0} {1}", f.Key, f.Value);
+            //}
 
         }
 
