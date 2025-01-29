@@ -330,7 +330,7 @@ internal class Program
                 }
                 break;
 
-        case "4":
+                case "4":
                     Console.Write("Enter new Status: ");
                     FlightToModify.Status = Console.ReadLine();
                     Console.WriteLine("Status updated successfully.");
@@ -371,6 +371,8 @@ internal class Program
 
                     Console.Write("Enter new Boarding Gate: ");
                     string newGate = Console.ReadLine();
+                    BoardingGate boardingGate = BGDict[newGate];
+                    boardingGate.Flight = FlightToModify;
                     if (BGDict.ContainsKey(newGate))
                     {
                         var gate = BGDict[newGate];
