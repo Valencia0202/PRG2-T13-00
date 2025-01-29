@@ -374,7 +374,19 @@ internal class Program
                     if (BGDict.ContainsKey(newGate))
                     {
                         var gate = BGDict[newGate];
-                        string requestCode = flightToModify.SpecialRequestCode;
+                        string requestCode = "";
+                        if(FlightToModify is CFFTFlight)
+                        {
+                            requestCode = "CFTT";
+                        }
+                        else if (FlightToModify is DDJBFlight)
+                        {
+                            requestCode = "DDJB";
+                        }
+                        else if (FlightToModify is LWTTFlight)
+                        {
+                            requestCode = "LWTT";
+                        }
 
         void ModifyFlightDetails()
         {
