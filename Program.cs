@@ -291,6 +291,7 @@ internal class Program
             Console.Write("Choose an existing Flight to modify or delete: ");
             string flightmodified = Console.ReadLine();
             Airline selectedAirline = airlineDict[flightmodified];
+            Flight FlightToModify = flightdict[flightmodified];
             Console.WriteLine("1. Modify Flight ");
             Console.WriteLine("2. Delete Flight");
             Console.Write("Choose an option: ");
@@ -331,7 +332,7 @@ internal class Program
 
         case "4":
                     Console.Write("Enter new Status: ");
-                    flightToModify.Status = Console.ReadLine();
+                    FlightToModify.Status = Console.ReadLine();
                     Console.WriteLine("Status updated successfully.");
                     break;
 
@@ -340,18 +341,18 @@ internal class Program
                     string specialRequest = Console.ReadLine();
                     if (specialRequest == "CFFT")
                     {
-                        flightToModify = new CFFTFlight();
+                        FlightToModify = new CFFTFlight();
                         Console.WriteLine("Special Request Code updated successfully.");
                     }
                     else if (specialRequest == "LWTT")
                     {
-                        flightToModify = new LWTTFlight();
+                        FlightToModify = new LWTTFlight();
                         Console.WriteLine("Special Request Code updated successfully.");
 
                     }
                     else if (specialRequest == "DDJB")
                     {
-                        flightToModify = new DDJBFlight();
+                        FlightToModify = new DDJBFlight();
                         Console.WriteLine("Special Request Code updated successfully.");
                     }
                     else
