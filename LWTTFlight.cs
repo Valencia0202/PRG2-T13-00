@@ -18,6 +18,7 @@ namespace PRG2_T13_00
             }
             return base.CalculateFees();
         }
+        public LWTTFlight() { }
         public LWTTFlight(string Fn, string o, string d, DateTime ET, string s, double Rf) : base(Fn, o, d, ET, s)
         {
             RequestFee = Rf;

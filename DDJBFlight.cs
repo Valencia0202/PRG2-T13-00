@@ -20,6 +20,7 @@ namespace PRG2_T13_00
             return base.CalculateFees();
 
         }
+        public DDJBFlight() { }
         public DDJBFlight(string Fn, string o, string d, DateTime ET, string s,double Rf) : base(Fn, o, d, ET, s)
         {
             RequestFee = Rf; 
