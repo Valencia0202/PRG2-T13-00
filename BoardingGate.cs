@@ -15,6 +15,7 @@ namespace PRG2_T13_00
         public Flight Flight { get; set; }
 
         //constructor
+        public BoardingGate() { }
         public BoardingGate(string gateName, bool supportsCFFT, bool supportsDDJB, bool supportsLWTT, Flight flight)
         {
             GateName = gateName;
