@@ -306,7 +306,8 @@ internal class Program
                 }
 
                 // Retrieve the flight to modify
-                Flight FlightToModify = flightdict[flightNumber];
+                Flight flightToModify = flightdict[flightNumber];
+                Flight flightstat = flightdict[]
 
                 // Display modification options
                 Console.WriteLine("What would you like to modify?");
@@ -404,12 +405,12 @@ internal class Program
                         Console.WriteLine("Invalid choice. Modification canceled.");
                         return;
                 }
-                flightdict[flightNumber] = FlightToModify;
+                flightdict[flightNumber] = flightToModify;
 
                 // Display updated flight details
                 Console.WriteLine("Updated Flight Details:");
                 Console.WriteLine($"{"Flight Number",-15}{"Origin",-20}{"Destination",-20}{"Expected Time",-25}{"Status",-15}{"Special Request",-15}{"Boarding Gate",-15}");
-                Console.WriteLine($"{FlightToModify.FlightNumber,-15}{FlightToModify.Origin,-20}{FlightToModify.Destination,-20}{FlightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}{FlightToModify.Status,-15}{FlightToModify.SpecialRequestCode,-15}{FlightToModify.BoardingGate,-15}");
+                Console.WriteLine($"{flightToModify.FlightNumber,-15}{flightToModify.Origin,-20}{flightToModify.Destination,-20}{flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}{flightToModify.Status,-15}{flightToModify.SpecialRequestCode,-15}{flightToModify.BoardingGate,-15}");
             }
         }
     }
