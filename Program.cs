@@ -278,351 +278,138 @@ internal class Program
                     Console.WriteLine($"{flight.FlightNumber,-15}{flight.Origin,-20}{flight.Destination,-20}{flight.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}");
                 }
             }
-        }
 
 
-        DisplayAirlineFlight();
-
-
-        // 8)	Modify flight details(V)
-        void ModifyFlightDetails()
-        {
-            DisplayAirlineFlight();
-            Console.Write("Choose an existing Flight to modify or delete: ");
-            string flightmodified = Console.ReadLine();
-            Airline selectedAirline = airlineDict[flightmodified];
-            Flight FlightToModify = flightdict[flightmodified];
-            Console.WriteLine("1. Modify Flight ");
-            Console.WriteLine("2. Delete Flight");
-            Console.Write("Choose an option: ");
-            int choice = int.Parse(Console.ReadLine());
-
-            if (choice == 0)
+            void ModifyFlightDetails()
             {
-                Console.WriteLine("1. Modify Basic Information");
-                Console.WriteLine("2. Modify Status");
-                Console.WriteLine("3. Modify Special Request Code");
-                Console.WriteLine("4. Modify Boarding Gate");
-                Console.Write("Choose an option: ");
-                int option = int.Parse(Console.ReadLine());
-                if (option == 1)
+                Console.WriteLine("=============================================");
+                Console.WriteLine("Modify Flight Details");
+                Console.WriteLine("=============================================");
+
+                // Display available flights
+                Console.WriteLine("Available Flights:");
+                Console.WriteLine($"{"Flight Number",-15}{"Airline Name",-25}{"Origin",-20}{"Destination",-20}");
+                foreach (var flight in flightdict.Values)
                 {
-                    Console.Write("Origin: ");
-                    string origin = Console.ReadLine();
-                    Console.Write("Destination:");
-                    string dest = Console.ReadLine();
-                    Console.Write("Enter Expected Departure/Arrival Time (dd/mm/yyyy hh:mm):");
-                    DateTime ET = Convert.ToDateTime(Console.ReadLine());
-                    Console.WriteLine("Flight updated !");
-                    Console.WriteLine(flightmodified);
-                    Console.WriteLine(selectedAirline.Name);
-                    Console.WriteLine(origin);
-                    Console.WriteLine(dest);
-                    Console.WriteLine(ET);
-                    //Console.WriteLine(status)
-                    //Console.Writeline(SpecialRequestCode);
-                    //Console.Writelone(BoardingGate)
-
+                    var airlineCode = flight.FlightNumber.Split(' ')[0];
+                    var airlineName = airlineDict.ContainsKey(airlineCode) ? airlineDict[airlineCode].Name : "Unknown Airline";
+                    Console.WriteLine($"{flight.FlightNumber,-15}{airlineName,-25}{flight.Origin,-20}{flight.Destination,-20}");
                 }
-                else if (choice == 2)
+
+                Console.Write("Enter the Flight Number to modify: ");
+                string flightNumber = Console.ReadLine().Trim().ToUpper(); // Normalize input
+
+                if (!flightdict.ContainsKey(flightNumber))
                 {
-                    Console.WriteLine("Invalid date format. Modification canceled.");
+                    Console.WriteLine("Invalid Flight Number. Returning to main menu...");
+                    return;
                 }
-                break;
 
-                case "4":
-                    Console.Write("Enter new Status: ");
-                    FlightToModify.Status = Console.ReadLine();
-                    Console.WriteLine("Status updated successfully.");
-                    break;
+                // Retrieve the flight to modify
+                Flight FlightToModify = flightdict[flightNumber];
 
-                case "5":
-                    Console.Write("Enter new Special Request Code (CFFT/DDJB/LWTT/None): ");
-                    string specialRequest = Console.ReadLine();
-                    if (specialRequest == "CFFT")
-                    {
-                        FlightToModify = new CFFTFlight();
-                        Console.WriteLine("Special Request Code updated successfully.");
-                    }
-                    else if (specialRequest == "LWTT")
-                    {
-                        FlightToModify = new LWTTFlight();
-                        Console.WriteLine("Special Request Code updated successfully.");
+                // Display modification options
+                Console.WriteLine("What would you like to modify?");
+                Console.WriteLine("[1] Origin");
+                Console.WriteLine("[2] Destination");
+                Console.WriteLine("[3] Expected Departure/Arrival Time");
+                Console.WriteLine("[4] Status");
+                Console.WriteLine("[5] Special Request Code");
+                Console.WriteLine("[6] Boarding Gate");
+                Console.Write("Enter your choice: ");
+                string modChoice = Console.ReadLine();
 
-                    }
-                    else if (specialRequest == "DDJB")
-                    {
-                        FlightToModify = new DDJBFlight();
-                        Console.WriteLine("Special Request Code updated successfully.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid Special Request Code. Modification canceled.");
-                    }
-                    break;
+                switch (modChoice)
+                {
+                    case "1":
+                        Console.Write("Enter new Origin: ");
+                        flightToModify.Origin = Console.ReadLine();
+                        Console.WriteLine("Origin updated successfully.");
+                        break;
 
-                case "6":
-                    Console.WriteLine("Available Boarding Gates:");
-                    Console.WriteLine($"{"Gate Name",-15}{"Supports DDJB",-15}{"Supports CFFT",-15}{"Supports LWTT",-15}");
-                    foreach (var gate in BGDict.Values)
-                    {
-                        Console.WriteLine($"{gate.GateName,-15}{gate.SupportsDDJB,-15}{gate.SupportsCFFT,-15}{gate.SupportsLWTT,-15}");
-                    }
+                    case "2":
+                        Console.Write("Enter new Destination: ");
+                        flightToModify.Destination = Console.ReadLine();
+                        Console.WriteLine("Destination updated successfully.");
+                        break;
 
-                    Console.Write("Enter new Boarding Gate: ");
-                    string newGate = Console.ReadLine();
-                    BoardingGate boardingGate = BGDict[newGate];
-                    boardingGate.Flight = FlightToModify;
-                    if (BGDict.ContainsKey(newGate))
-                    {
-                        var gate = BGDict[newGate];
-                        string requestCode = "";
-                        if(FlightToModify is CFFTFlight)
+                    case "3":
+                        Console.Write("Enter new Expected Time (dd/MM/yyyy hh:mm): ");
+                        if (DateTime.TryParse(Console.ReadLine(), out DateTime newTime))
                         {
-                            requestCode = "CFTT";
+                            flightToModify.ExpectedTime = newTime;
+                            Console.WriteLine("Expected Time updated successfully.");
                         }
-                        else if (FlightToModify is DDJBFlight)
+                        else
                         {
-                            requestCode = "DDJB";
+                            Console.WriteLine("Invalid date format. Modification canceled.");
                         }
-                        else if (FlightToModify is LWTTFlight)
+                        break;
+
+                    case "4":
+                        Console.Write("Enter new Status: ");
+                        FlightToModify.Status = Console.ReadLine();
+                        Console.WriteLine("Status updated successfully.");
+                        break;
+
+                    case "5":
+                        Console.Write("Enter new Special Request Code (CFFT/DDJB/LWTT/None): ");
+                        string specialRequest = Console.ReadLine();
+                        if (specialRequest == "CFFT")
                         {
-                            requestCode = "LWTT";
+                            FlightToModify = new CFFTFlight();
+
+                            Console.WriteLine("Special Request Code updated successfully.");
                         }
-
-                        void ModifyFlightDetails()
+                        else if (specialRequest == "LWTT")
                         {
-                            Console.WriteLine("=============================================");
-                            Console.WriteLine("Modify Flight Details");
-                            Console.WriteLine("=============================================");
+                            FlightToModify = new LWTTFlight();
+                            Console.WriteLine("Special Request Code updated successfully.");
 
-                            // Display available flights
-                            Console.WriteLine("Available Flights:");
-                            Console.WriteLine($"{"Flight Number",-15}{"Airline Name",-25}{"Origin",-20}{"Destination",-20}");
-                            foreach (var flight in flightdict.Values)
-                            {
-                                var airlineCode = flight.FlightNumber.Split(' ')[0];
-                                var airlineName = airlineDict.ContainsKey(airlineCode) ? airlineDict[airlineCode].Name : "Unknown Airline";
-                                Console.WriteLine($"{flight.FlightNumber,-15}{airlineName,-25}{flight.Origin,-20}{flight.Destination,-20}");
-                            }
+                        }
+                        else if (specialRequest == "DDJB")
+                        {
+                            FlightToModify = new DDJBFlight();
+                            Console.WriteLine("Special Request Code updated successfully.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid Special Request Code. Modification canceled.");
+                        }
+                        break;
 
-                            Console.Write("Enter the Flight Number to modify: ");
-                            string flightNumber = Console.ReadLine();
-
-                            if (!flightdict.ContainsKey(flightNumber))
-                            {
-                                Console.WriteLine("Invalid Flight Number. Returning to main menu...");
-                                return;
-                            }
-
-                            // Retrieve the flight to modify
-                            Flight flightToModify = flightdict[flightNumber];
-
-                            // Display modification options
-                            Console.WriteLine("What would you like to modify?");
-                            Console.WriteLine("[1] Origin");
-                            Console.WriteLine("[2] Destination");
-                            Console.WriteLine("[3] Expected Departure/Arrival Time");
-                            Console.WriteLine("[4] Status");
-                            Console.WriteLine("[5] Special Request Code");
-                            Console.WriteLine("[6] Boarding Gate");
-                            Console.Write("Enter your choice: ");
-                            string modChoice = Console.ReadLine();
-
-                            switch (modChoice)
-                            {
-                                case "1":
-                                    Console.Write("Enter new Origin: ");
-                                    flightToModify.Origin = Console.ReadLine();
-                                    Console.WriteLine("Origin updated successfully.");
-                                    break;
-
-                                case "2":
-                                    Console.Write("Enter new Destination: ");
-                                    flightToModify.Destination = Console.ReadLine();
-                                    Console.WriteLine("Destination updated successfully.");
-                                    break;
-
-                                case "3":
-                                    Console.Write("Enter new Expected Time (dd/MM/yyyy hh:mm): ");
-                                    if (DateTime.TryParse(Console.ReadLine(), out DateTime newTime))
-                                    {
-                                        flightToModify.ExpectedTime = newTime;
-                                        Console.WriteLine("Expected Time updated successfully.");
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Invalid date format. Modification canceled.");
-                                    }
-                                    break;
-
-                                case "4":
-                                    Console.Write("Enter new Status: ");
-                                    flightToModify.Status = Console.ReadLine();
-                                    Console.WriteLine("Status updated successfully.");
-                                    break;
-
-                                case "5":
-                                    Console.Write("Enter new Special Request Code (CFFT/DDJB/LWTT/None): ");
-                                    string specialRequest = Console.ReadLine();
-                                    if (new[] { "CFFT", "DDJB", "LWTT", "None" }.Contains(specialRequest))
-                                    {
-                                        flightToModify.SpecialRequestCode = specialRequest;
-                                        Console.WriteLine("Special Request Code updated successfully.");
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Invalid Special Request Code. Modification canceled.");
-                                    }
-                                    break;
-
-                                case "6":
-                                    Console.Write("Enter new Boarding Gate: ");
-                                    string newGate = Console.ReadLine();
-                                    if (BGDict.ContainsKey(newGate))
-                                    {
-                                        flightToModify.BoardingGate = newGate;
-                                        Console.WriteLine("Boarding Gate updated successfully.");
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Invalid Boarding Gate. Modification canceled.");
-                                    }
-                                    break;
-
-                                default:
-                                    Console.WriteLine("Invalid choice. Modification canceled.");
-                                    return;
-                            }
-
-                            // Display updated flight details
-                            Console.WriteLine("Updated Flight Details:");
-                            Console.WriteLine($"{"Flight Number",-15}{"Origin",-20}{"Destination",-20}{"Expected Time",-25}{"Status",-15}{"Special Request",-15}{"Boarding Gate",-15}");
-                            Console.WriteLine($"{flightToModify.FlightNumber,-15}{flightToModify.Origin,-20}{flightToModify.Destination,-20}{flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}{flightToModify.Status,-15}{flightToModify.SpecialRequestCode,-15}{flightToModify.BoardingGate,-15}");
+                    case "6":
+                        Console.WriteLine("Available Boarding Gates:");
+                        Console.WriteLine($"{"Gate Name",-15}{"Supports DDJB",-15}{"Supports CFFT",-15}{"Supports LWTT",-15}");
+                        foreach (var gate in BGDict.Values)
+                        {
+                            Console.WriteLine($"{gate.GateName,-15}{gate.SupportsDDJB,-15}{gate.SupportsCFFT,-15}{gate.SupportsLWTT,-15}");
                         }
 
-                        void ModifyFlightDetails()
+                        Console.Write("Enter new Boarding Gate: ");
+                        string newGate = Console.ReadLine().Trim().ToUpper();
+
+                        if (BGDict.ContainsKey(newGate))
                         {
-                            Console.WriteLine("=============================================");
-                            Console.WriteLine("Modify Flight Details");
-                            Console.WriteLine("=============================================");
-
-                            // Display available flights
-                            Console.WriteLine("Available Flights:");
-                            Console.WriteLine($"{"Flight Number",-15}{"Airline Name",-25}{"Origin",-20}{"Destination",-20}");
-                            foreach (var flight in flightdict.Values)
-                            {
-                                var airlineCode = flight.FlightNumber.Split(' ')[0];
-                                var airlineName = airlineDict.ContainsKey(airlineCode) ? airlineDict[airlineCode].Name : "Unknown Airline";
-                                Console.WriteLine($"{flight.FlightNumber,-15}{airlineName,-25}{flight.Origin,-20}{flight.Destination,-20}");
-                            }
-
-                            Console.Write("Enter the Flight Number to modify: ");
-                            string flightNumber = Console.ReadLine();
-
-                            if (!flightdict.ContainsKey(flightNumber))
-                            {
-                                Console.WriteLine("Invalid Flight Number. Returning to main menu...");
-                                return;
-                            }
-
-                            // Retrieve the flight to modify
-                            Flight flightToModify = flightdict[flightNumber];
-
-                            // Display modification options
-                            Console.WriteLine("What would you like to modify?");
-                            Console.WriteLine("[1] Origin");
-                            Console.WriteLine("[2] Destination");
-                            Console.WriteLine("[3] Expected Departure/Arrival Time");
-                            Console.WriteLine("[4] Status");
-                            Console.WriteLine("[5] Special Request Code");
-                            Console.WriteLine("[6] Boarding Gate");
-                            Console.Write("Enter your choice: ");
-                            string modChoice = Console.ReadLine();
-
-                            switch (modChoice)
-                            {
-                                case "1":
-                                    Console.Write("Enter new Origin: ");
-                                    flightToModify.Origin = Console.ReadLine();
-                                    Console.WriteLine("Origin updated successfully.");
-                                    break;
-
-                                case "2":
-                                    Console.Write("Enter new Destination: ");
-                                    flightToModify.Destination = Console.ReadLine();
-                                    Console.WriteLine("Destination updated successfully.");
-                                    break;
-
-                                case "3":
-                                    Console.Write("Enter new Expected Time (dd/MM/yyyy hh:mm): ");
-                                    if (DateTime.TryParse(Console.ReadLine(), out DateTime newTime))
-                                    {
-                                        flightToModify.ExpectedTime = newTime;
-                                        Console.WriteLine("Expected Time updated successfully.");
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Invalid date format. Modification canceled.");
-                                    }
-                                    break;
-
-                                case "4":
-                                    Console.Write("Enter new Status: ");
-                                    flightToModify.Status = Console.ReadLine();
-                                    Console.WriteLine("Status updated successfully.");
-                                    break;
-
-                                case "5":
-                                    Console.Write("Enter new Special Request Code (CFFT/DDJB/LWTT/None): ");
-                                    string specialRequest = Console.ReadLine();
-                                    if (specialRequest == "CFFT")
-                                    {
-                                        FlightToModify = new CFFTFlight();
-                                        Console.WriteLine("Special Request Code updated successfully.");
-                                    }
-                                    else if (specialRequest == "LWTT")
-                                    {
-                                        FlightToModify = new LWTTFlight();
-                                        Console.WriteLine("Special Request Code updated successfully.");
-
-                                    }
-                                    else if (specialRequest == "DDJB")
-                                    {
-                                        FlightToModify = new DDJBFlight();
-                                        Console.WriteLine("Special Request Code updated successfully.");
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Invalid Special Request Code. Modification canceled.");
-                                    }
-                                    break;
-
-                                case "6":
-
-                                    Console.WriteLine("Available Boarding Gates:");
-                                    Console.WriteLine($"{"Gate Name",-15}{"Supports DDJB",-15}{"Supports CFFT",-15}{"Supports LWTT",-15}");
-                                    foreach (var gate in BGDict.Values)
-                                    {
-                                        Console.WriteLine($"{gate.GateName,-15}{gate.SupportsDDJB,-15}{gate.SupportsCFFT,-15}{gate.SupportsLWTT,-15}");
-                                    }
-
-                                    Console.Write("Enter new Boarding Gate: ");
-                                    string newGate = Console.ReadLine();
-                                    BoardingGate boardingGate = BGDict[newGate];
-                                    boardingGate.Flight = FlightToModify;
-                                default:
-                                    Console.WriteLine("Invalid choice. Modification canceled.");
-                                    return;
-                            }
-
-                            // Display updated flight details
-                            Console.WriteLine("Updated Flight Details:");
-                            Console.WriteLine($"{"Flight Number",-15}{"Origin",-20}{"Destination",-20}{"Expected Time",-25}{"Status",-15}{"Special Request",-15}{"Boarding Gate",-15}");
-                            Console.WriteLine($"{flightToModify.FlightNumber,-15}{flightToModify.Origin,-20}{flightToModify.Destination,-20}{flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}{flightToModify.Status,-15}{flightToModify.SpecialRequestCode,-15}{flightToModify.BoardingGate,-15}");
+                            FlightToModify.BoardingGate = newGate;
+                            Console.WriteLine("Boarding Gate updated successfully.");
                         }
-                    }
+                        else
+                        {
+                            Console.WriteLine("Invalid Boarding Gate. Modification canceled.");
+                        }
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid choice. Modification canceled.");
+                        return;
                 }
+                flightdict[flightNumber] = FlightToModify;
+
+                // Display updated flight details
+                Console.WriteLine("Updated Flight Details:");
+                Console.WriteLine($"{"Flight Number",-15}{"Origin",-20}{"Destination",-20}{"Expected Time",-25}{"Status",-15}{"Special Request",-15}{"Boarding Gate",-15}");
+                Console.WriteLine($"{FlightToModify.FlightNumber,-15}{FlightToModify.Origin,-20}{FlightToModify.Destination,-20}{FlightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}{FlightToModify.Status,-15}{FlightToModify.SpecialRequestCode,-15}{FlightToModify.BoardingGate,-15}");
             }
         }
     }
