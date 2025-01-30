@@ -310,27 +310,37 @@ internal class Program
                 string code = Console.ReadLine();
                 
                 Airline airline = new Airline();
+
                 if (code == "None")
                 {
                     Flight flights = new NORMFlight(flightno, origin, dest, ET, "On Time");
                     airline.AddFlight(flights);
+                    flightdict.Add(flights.FlightNumber, flights);
+
+
                 }
 
                 else if (code == "DDJB")
                 {
                     Flight flights = new DDJBFlight(flightno, origin, dest, ET, "On Time", 300.00);
                     airline.AddFlight(flights);
+                    flightdict.Add(flights.FlightNumber, flights);
+
                 }
                 else if (code == "CFFT")
                 {
                     Flight flights = new CFFTFlight(flightno, origin, dest, ET, "On Time", 150.00);
                     airline.AddFlight(flights);
+                    flightdict.Add(flights.FlightNumber, flights);
+
 
                 }
                 else if (code == "LWTT")
                 {
                     Flight flights = new LWTTFlight(flightno, origin, dest, ET, "On Time", 500.00);
                     airline.AddFlight(flights);
+                    flightdict.Add(flights.FlightNumber,flights);
+
 
                 }
 
@@ -379,13 +389,48 @@ internal class Program
 
         //9	Validations (and feedback)
 
-
-
-
-
-        
+        var sortedFlights = flightdict.Values.ToList();
+        sortedFlights.Sort();
+        Console.WriteLine("Scheduled Flights for the Day:\n");
+        string reqcode = "";
+        foreach (var flight in sortedFlights)
+        {
+            if(flight is LWTTFlight)
+            {
+                reqcode = "LWTT";
+            }
+            else if (flight is DDJBFlight)
+            {
+                reqcode = "DDJB";
+            }
+            else if (flight is CFFTFlight)
+            {
+                reqcode = "CFFT";
+            }
+            BoardingGate boardingGate = null;
+            foreach (var gate in BGDict.Values)
+            {
+                if (gate.Flight == flight)  // Check if this gate is assigned to the flight
+                {
+                    boardingGate = gate;
+                    break;
+                }
+            }
+            string boardinginfo = " ";
+            if (boardingGate != null)
+            {
+                 boardinginfo = boardingGate.GateName; //print the assigned boarding gate
+            }
             
-        
+
+            Console.WriteLine(flight + "\n" + "code:" + reqcode + "\n"+"BG:" + boardinginfo);
+        }
+
+
+
+
+
+
     }
 
 }
