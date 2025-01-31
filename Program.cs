@@ -416,6 +416,7 @@ internal class Program
                 if (option == 1)
                 {
                     // Retrieve the flight to modify
+                    string code = flightdict[flightNumber].Code;
                     Flight flightToModify = flightdict[flightNumber];
                     string modChoice = Console.ReadLine();
                     switch (modChoice)
@@ -423,33 +424,30 @@ internal class Program
                         case "1":
                             Console.Write("Enter new Origin: ");
                             flightToModify.Origin = Console.ReadLine();
-                            Console.WriteLine("Origin updated successfully.");
-                            break;
-                        case "2":
                             Console.Write("Enter new Destination: ");
                             flightToModify.Destination = Console.ReadLine();
-                            Console.WriteLine("Destination updated successfully.");
-                            break;
-                        case "3":
                             Console.Write("Enter new Expected Time (dd/MM/yyyy hh:mm): ");
                             if (DateTime.TryParse(Console.ReadLine(), out DateTime newTime))
                             {
                                 flightToModify.ExpectedTime = newTime;
-                                Console.WriteLine("Expected Time updated successfully.");
+                                Console.WriteLine("Flight updated!");
                             }
                             else
                             {
                                 Console.WriteLine("Invalid date format. Modification canceled.");
                             }
+
                             break;
 
-                        case "4":
+                        case "2":
                             Console.Write("Enter new Status: ");
                             flightToModify.Status = Console.ReadLine();
                             Console.WriteLine("Status updated successfully.");
+                            Console.WriteLine($"{flightToModify.FlightNumber,-15}{flightToModify.Origin,-20}{flightToModify.Destination,-20}{flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}{      }{flightToModify.Status,-15}{assignedGate,-15}");
+
                             break;
 
-                        case "5":
+                        case "3":
                             Console.Write("Enter new Special Request Code (CFFT/DDJB/LWTT/None): ");
                             string specialRequest = Console.ReadLine().Trim().ToUpper();
 
@@ -457,6 +455,8 @@ internal class Program
                             {
                                 string SpecialRequestCode = specialRequest;
                                 Console.WriteLine("Special Request Code updated successfully.");
+                                Console.WriteLine($"{flightToModify.FlightNumber,-15}{flightToModify.Origin,-20}{flightToModify.Destination,-20}{flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}{      }{flightToModify.Status,-15}{assignedGate,-15}");
+
                             }
                             else
                             {
@@ -465,7 +465,7 @@ internal class Program
                             break;
 
 
-                        case "6":
+                        case "4":
                             string assignedGate = BGDict.Values.FirstOrDefault(g => g.Flight == flightToModify)?.GateName ?? "None";
                             Console.WriteLine("Available Boarding Gates:");
                             Console.WriteLine($"{"Gate Name",-15}{"Supports DDJB",-15}{"Supports CFFT",-15}{"Supports LWTT",-15}");
@@ -493,8 +493,9 @@ internal class Program
                                 {
                                     // Update the gate's assigned flight
                                     selectedGate.Flight = flightToModify;
-                                    Console.WriteLine($"{flightToModify.FlightNumber,-15}{flightToModify.Origin,-20}{flightToModify.Destination,-20}{flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}{flightToModify.Status,-15}{assignedGate,-15}");
+                                    Console.WriteLine($"{flightToModify.FlightNumber,-15}{flightToModify.Origin,-20}{flightToModify.Destination,-20}{flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}{      }{flightToModify.Status,-15}{assignedGate,-15}");
                                 }
+
                             }
                             else
                             {
