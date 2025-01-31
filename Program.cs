@@ -508,7 +508,6 @@ internal class Program
                     flightdict[flightNumber] = flightToModify;
 
                     // Display updated flight details
-                    Console.WriteLine("Updated Flight Details:");
                     Console.WriteLine($"{"Flight Number",-15}{"Origin",-20}{"Destination",-20}{"Expected Time",-25}{"Status",-15}{"Special Request",-15}{"Boarding Gate",-15}");
                     Console.WriteLine($"{flightToModify.FlightNumber,-15}{flightToModify.Origin,-20}{flightToModify.Destination,-20}{flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}{flightToModify.Status,-15}{spe,-15}{assignedGate,-15}");
                 }
