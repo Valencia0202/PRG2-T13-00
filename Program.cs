@@ -151,8 +151,6 @@ internal class Program
                     ProcessFlights();
                     break;
                 case "9":
-                    terminal.AddAirline(airlineDict);
-                    terminal.AddBoardingGate(BGDict);
                     DisplayFeePerAirline(terminal);
                     // Implement Display Flight Schedule functionality
                     break;
@@ -221,7 +219,7 @@ internal class Program
                 Console.WriteLine($"Origin: {selectedFlight.Origin}");
                 Console.WriteLine($"Destination: {selectedFlight.Destination}");
                 Console.WriteLine($"Expected Time: {selectedFlight.ExpectedTime}");
-                Console.WriteLine($"Status: { selectedFlight.Status}");
+                Console.WriteLine($"Status: {selectedFlight.Status}");
                 string code = "";
                 if (selectedFlight is CFFTFlight)
                 {
@@ -488,19 +486,7 @@ internal class Program
                             Console.Write("Enter new Destination: ");
                             flightToModify.Destination = Console.ReadLine();
                             Console.Write("Enter new Expected Time (dd/MM/yyyy HH:mm): ");
-                            string dateTimeString = Console.ReadLine();
-
-                            DateTime expectedTime;
-                            if (DateTime.TryParseExact(dateTimeString, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out expectedTime))
-                            {
-                                flightToModify.ExpectedTime = expectedTime;
-                                Console.WriteLine("Expected time updated successfully.");
-                            }
-                            else
-                            {
-                                Console.WriteLine("Invalid date/time format. Please use dd/MM/yyyy HH:mm.");
-                                // You might want to handle this error more robustly, like prompting the user again.
-                            }
+                            DateTime T = Convert.ToDateTime(Console.ReadLine());
 
                             Console.WriteLine($"Flight Number: {flightToModify.FlightNumber,-15}");
                             Console.WriteLine($"Airline Name: ");
@@ -801,28 +787,29 @@ internal class Program
 
 
         //Advance part b
-        static void DisplayFeePerAirline(Terminal terminal)
+        void DisplayFeePerAirline(Terminal terminal)
         {
-            Console.WriteLine(terminal);
-            // Check if all flights have their Boarding Gate assigned
-            bool allAssigned = terminal.Flights.Values.All(f => terminal.BoardingGates.Values.Any(gate => gate.Flight == f));
-
-            if (!allAssigned)
+            // Ensure all flights have assigned boarding gates before proceeding
+            if (!terminal.Flights.Values.All(f => terminal.BoardingGates.Values.Any(gate => gate.Flight == f)))
             {
                 Console.WriteLine("Ensure all flights have their Boarding Gates assigned before running this feature again.");
                 return;
             }
 
-            double totalFees = 0, totalDiscounts = 0;
+            double totalFees = 0;
+            double totalDiscounts = 0;
             const double DiscountAmount = 25;
-            HashSet<string> DiscountOrigins = new() { "DXB", "BKK", "NRT" };
+            HashSet<string> DiscountOrigins = new HashSet<string> { "DXB", "BKK", "NRT" }; // Predefined discount origins
 
             foreach (var airline in terminal.Airlines.Values)
             {
-                double airlineSubtotal = 0, airlineDiscounts = 0;
+                double airlineSubtotal = 0;
+                double airlineDiscounts = 0;
 
+                // Retrieve all flights associated with the airline using Terminal's method
                 var flights = terminal.Flights.Values.Where(f => terminal.GetAirlineFromFlight(f) == airline).ToList();
-                if (!flights.Any())
+
+                if (flights.Count == 0)
                 {
                     Console.WriteLine($"Airline {airline.Name} has no flights.");
                     continue;
@@ -830,11 +817,9 @@ internal class Program
 
                 foreach (var flight in flights)
                 {
-                    // Calculate fees for the flight
-                    double flightFee = flight.CalculateFees();
+                    double flightFee = flight.CalculateFees(); // Assume Flight class has this method
                     airlineSubtotal += flightFee;
 
-                    // Apply promotional discounts based on flight origin
                     if (DiscountOrigins.Contains(flight.Origin))
                     {
                         airlineDiscounts += DiscountAmount;
@@ -851,7 +836,6 @@ internal class Program
                 Console.WriteLine($"  Final Fee: ${finalFee:F2}\n");
             }
 
-            // Calculate final totals and discount percentage
             double finalTotal = totalFees - totalDiscounts;
             double discountPercentage = totalFees > 0 ? (totalDiscounts / totalFees) * 100 : 0;
 
@@ -861,5 +845,6 @@ internal class Program
             Console.WriteLine($"Final Total Fees: ${finalTotal:F2}");
             Console.WriteLine($"Discount Percentage: {discountPercentage:F2}%");
         }
+
     }
 }
