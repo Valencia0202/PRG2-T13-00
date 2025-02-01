@@ -199,7 +199,7 @@ internal class Program
                 Console.WriteLine($"Origin: {selectedFlight.Origin}");
                 Console.WriteLine($"Destination: {selectedFlight.Destination}");
                 Console.WriteLine($"Expected Time: {selectedFlight.ExpectedTime}");
-                Console.Write(selectedFlight.Status);
+                Console.WriteLine($"Status:{selectedFlight.Status}");
                 string code = "";
                 if (selectedFlight is CFFTFlight)
                 {
@@ -454,24 +454,43 @@ internal class Program
             Flight flight = unassignedFlightQueue.Dequeue(); // Get the first flight
 
             BoardingGate assignedGate = null;
-            string reqCode = GetSpecialRequestCode(flight);
-
+            string reqCode = "";
+            if(flight is DDJBFlight)
+            {
+                reqCode = "DDJB";
+            }
+            else if(flight is LWTTFlight)
+            {
+                reqCode = "LWTT";
+            }
+            else if(flight is CFFTFlight)
+            {
+                reqCode = "CFFT";
+            }
             // Find a matching unassigned boarding gate
             foreach (var gate in BGDict.Values)
             {
                 if (gate.Flight == null) // Gate is unassigned
                 {
-                    // Check if the gate supports the flight's special request
-                    if ((reqCode == "CFFT" && gate.SupportsCFFT) ||
-                        (reqCode == "DDJB" && gate.SupportsDDJB) ||
-                        (reqCode == "LWTT" && gate.SupportsLWTT) ||
-                        string.IsNullOrEmpty(reqCode)) // No special request
-                    {
-                        assignedGate = gate;
-                        break; // Stop searching
+                    
+                        // Check if the gate supports the flight's special request
+                        if (string.IsNullOrEmpty(reqCode))
+                        {
+                            // If the flight has no special request, assign it to any unassigned gate
+                            assignedGate = gate;
+                            break;
+                        }
+                        else if ((reqCode == "DDJB" && gate.SupportsDDJB) ||
+                                 (reqCode == "CFFT" && gate.SupportsCFFT) ||
+                                 (reqCode == "LWTT" && gate.SupportsLWTT))
+                        {
+                            // If the flight has a special request, assign it to a gate that supports the request
+                            assignedGate = gate;
+                            break;
+                        }
                     }
                 }
-            }
+            
 
             // Assign the gate to the flight
             if (assignedGate != null)
@@ -520,14 +539,6 @@ internal class Program
         Console.WriteLine($"Percentage of Automatically Assigned Boarding Gates: {gateAutoAssignPercentage:F2}%");
     }
 
-    // Helper method to get the special request code for a flight
-    static string GetSpecialRequestCode(Flight flight)
-    {
-        if (flight is CFFTFlight) return "CFFT";
-        if (flight is DDJBFlight) return "DDJB";
-        if (flight is LWTTFlight) return "LWTT";
-        return null;
-    }
 }
        
     
