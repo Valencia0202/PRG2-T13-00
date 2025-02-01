@@ -400,23 +400,27 @@ internal class Program
                 {
                     reqcode = "CFFT";
                 }
-                //BoardingGate boardingGate = null;
-                //foreach (var gate in BGDict.Values)
-                //{
-                //    if (gate.Flight == flight)  // Check if this gate is assigned to the flight
-                //    {
-                //        boardingGate = gate;
-                //        break;
-                //    }
-                //}
-                //string boardinginfo = " ";
-                //if (boardingGate != null)
-                //{
-                //    boardinginfo = boardingGate.GateName; //print the assigned boarding gate
-                //}
+                BoardingGate boardingGate = null;
+                foreach (var gate in BGDict.Values)
+                {
+                    if (gate.Flight == flight)  // Check if this gate is assigned to the flight
+                    {
+                        boardingGate = gate;
+                        break;
+                    }
+                }
+                string boardinginfo = " ";
+                if (boardingGate != null)
+                {
+                    boardinginfo = boardingGate.GateName; //print the assigned boarding gate
+                }
+                else
+                {
+                    boardinginfo = "Unassigned";
+                }
 
                 string formattedTime = flight.ExpectedTime.ToString("dd/MM/yyyy hh:mm:ss tt");
-                Console.WriteLine(flight + "\n" + "code:" + reqcode + "\n" + "BG:" + "Unassigned" + "\n" + "Status: Scheduled\n" + "Departure: " + formattedTime);
+                Console.WriteLine(flight+ "\n" + "code:" + reqcode + "\n" + "Boarding Gate:" + boardinginfo + "\n" + "Status: Scheduled\n" + "Departure: " + formattedTime);
             }
         }
         SortedFlights();

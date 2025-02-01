@@ -24,7 +24,7 @@ namespace PRG2_T13_00
         }
         public override string ToString()
         {
-            return base.ToString() + "\tRequestFee:"+RequestFee;
+            return base.ToString() + "\tRequestFee:"+ RequestFee;
         }
     }
 }
