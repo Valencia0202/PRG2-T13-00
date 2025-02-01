@@ -579,22 +579,23 @@ internal class Program
         }
     
     //Advance part b
-    void DisplayFeePerAirline(Dictionary<string, Airline>)
-    {
-        Flight flightN = flightdict[flightNumber];
-        // Check if all flights have their Boarding Gate assigned
-        var boardingGate = BGDict.Values.FirstOrDefault(gate => gate.Flight == flightN); // Assuming 'flight' is defined elsewhere
 
-        bool allAssigned = airlines.SelectMany(a => a.Flights.Values).All(f => f.boardingGate != null);
-        if (!allAssigned)
+        void DisplayFeePerAirline(Dictionary<string, Airline> airlineDict, Dictionary<string, BoardingGate> BGDict)
         {
+            Flight flightN = flightdict[flightNumber];
+            // Check if all flights have their Boarding Gate assigned
+            var boardingGate = BGDict.Values.FirstOrDefault(gate => gate.Flight == flightN); // Assuming 'flight' is defined elsewhere
+
+            bool allAssigned = airlines.SelectMany(a => a.Flights.Values).All(f => f.boardingGate != null);
+            if (!allAssigned)
+            {
             Console.WriteLine("Ensure all flights have their Boarding Gates assigned before running this feature again.");
             return;
-        }
+            }
 
-        double totalFees = 0, totalDiscounts = 0;
-        const double DiscountAmount = 25;
-        HashSet<string> DiscountOrigins = new() { "DXB", "BKK", "NRT" };
+            double totalFees = 0, totalDiscounts = 0;
+            const double DiscountAmount = 25;
+            HashSet<string> DiscountOrigins = new() { "DXB", "BKK", "NRT" };
 
         foreach (var airline in airlines)
         {
