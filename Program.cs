@@ -132,12 +132,15 @@ internal class Program
                     AssignBG(flightdict, BGDict);
                     break;
                 case "4":
+                    Createflight();
                     // Implement Create Flight functionality
                     break;
                 case "5":
+                    DisplayAirlineFlight();
                     // Implement Display Airline Flights functionality
                     break;
                 case "6":
+                    ModifyFlightDetails();
                     // Implement Modify Flight Details functionality
                     break;
                 case "7":
