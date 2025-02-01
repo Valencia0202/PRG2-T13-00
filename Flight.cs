@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PRG2_T13_00
 {
-    abstract class Flight: IComparable<Flight>
+    abstract class Flight : IComparable<Flight>
     {
         public string FlightNumber { get; set; }
         public string Origin { get; set; }
@@ -41,7 +41,7 @@ namespace PRG2_T13_00
 
         public override string ToString()
         {
-            return $"FlightNumber:{FlightNumber:10} \tOrigin:{Origin:10}  \tDestination:{Destination:10}  \tExpected Time: {ExpectedTime.ToString("MM/dd/yyyy h:mm tt"):10}";
+            return $"FlightNumber:{FlightNumber:10} \tOrigin:{Origin:10}  \tDestination:{Destination:10}  \tExpected Time: {ExpectedTime.ToString("dd/MM/yyyy hh:mm:ss tt"):10}";
         }
         public int CompareTo(Flight other)
         {
@@ -54,17 +54,18 @@ namespace PRG2_T13_00
             // Compare based on ExpectedDepartureTime (ascending order)
             if (myDepartureTime > otherDepartureTime)
             {
-                return 1;  // This flight departs later, so it's "greater"
+                return 1;
             }
             else if (myDepartureTime < otherDepartureTime)
             {
-                return -1; // This flight departs earlier, so it's "less"
+                return -1;
             }
             else
             {
-                return 0;  // Both flights depart at the same time
+                return 0;
             }
         }
+    }
 
     }
-}
+
