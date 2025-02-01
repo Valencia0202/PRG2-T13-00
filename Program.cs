@@ -93,7 +93,6 @@ internal class Program
             //    Console.WriteLine("{0} {1}", f.Key, f.Value);
             //}
 
-
         }
 
         // print contents of dictionary
@@ -180,7 +179,6 @@ internal class Program
                 Console.WriteLine("{0,-15} {1,-25} {2,-20} {3,-20} {4,-20}", flight.Key, fname, flight.Value.Origin, flight.Value.Destination, flight.Value.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"));
             }
         }
-        Displayflights();
 
         // 4)	List all boarding gates(V)
         static void ListBG(Dictionary<string, BoardingGate> BGDict)
@@ -195,7 +193,7 @@ internal class Program
                 Console.WriteLine($"{item.Value.GateName,-15}{item.Value.SupportsDDJB,-20}{item.Value.SupportsCFFT,-20}{item.Value.SupportsLWTT,-20}");
             }
         }
-        ListBG(BGDict);
+
 
         // 5)	Assign a boarding gate to a flight
         static void AssignBG(Dictionary<string, Flight> flightDict, Dictionary<string, BoardingGate> BGDict)
@@ -302,7 +300,7 @@ internal class Program
             }
 
         }
-        AssignBG(flightdict, BGDict);
+ 
 
         // 6)	Create a new flight
 
@@ -383,7 +381,6 @@ internal class Program
             }
         }
 
-        Createflight();
 
 
         // 7)	Display full flight details from an airline(V)
@@ -670,9 +667,10 @@ internal class Program
             }
         }
         
+        //Advance part a
         void ProcessFlights()
 
-        { //Advance part a
+        { 
             Queue<Flight> unassignedFlightQueue = new Queue<Flight>();
 
             // Identify unassigned flights
