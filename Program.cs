@@ -113,46 +113,46 @@ internal class Program
             Console.WriteLine("7. Display Flight Schedule");
             Console.WriteLine("0. Exit");
         }
-        while(true)
+        while (true)
 
+        {
+            Displaymenu();
+            Console.Write("Please select your option: ");
+            string option = Console.ReadLine();
+
+            switch (option)
             {
-                Displaymenu();
-                Console.Write("Please select your option: ");
-                string option = Console.ReadLine();
-
-                switch (option)
-                {
-                    case "1":
-                        Displayflights();
-                        break;
-                    case "2":
-                        ListBG(BGDict);
-                        break;
-                    case "3":
-                        AssignBG(flightdict, BGDict);
-                        break;
-                    case "4":
-                        // Implement Create Flight functionality
-                        break;
-                    case "5":
-                        // Implement Display Airline Flights functionality
-                        break;
-                    case "6":
-                        // Implement Modify Flight Details functionality
-                        break;
-                    case "7":
+                case "1":
+                    Displayflights();
+                    break;
+                case "2":
+                    ListBG(BGDict);
+                    break;
+                case "3":
+                    AssignBG(flightdict, BGDict);
+                    break;
+                case "4":
+                    // Implement Create Flight functionality
+                    break;
+                case "5":
+                    // Implement Display Airline Flights functionality
+                    break;
+                case "6":
+                    // Implement Modify Flight Details functionality
+                    break;
+                case "7":
                     SortedFlights();
 
-                        // Implement Display Flight Schedule functionality
-                        break;
-                    case "0":
-                        Console.WriteLine("Exiting...");
-                        return; // Exit the program
-                    default:
-                        Console.WriteLine("Invalid option, please try again.");
-                        break;
-                }
+                    // Implement Display Flight Schedule functionality
+                    break;
+                case "0":
+                    Console.WriteLine("Exiting...");
+                    return; // Exit the program
+                default:
+                    Console.WriteLine("Invalid option, please try again.");
+                    break;
             }
+        }
 
         // 3)	List all flights with their basic information
         void Displayflights()
@@ -534,7 +534,7 @@ internal class Program
 
 
 
-        // 8)	Modify flight details(V)
+                        // 8)	Modify flight details(V)
 
                         case "4":
                             string assignedGate = BGDict.Values.FirstOrDefault(g => g.Flight == flightToModify)?.GateName ?? "None";
@@ -665,13 +665,113 @@ internal class Program
                 Console.WriteLine(flight + "\n" + "code:" + reqcode + "\n" + "BG:" + "Unassigned" + "\n" + "Status: Scheduled\n" + "Departure: " + formattedTime);
             }
         }
-        SortedFlights();
+        
+        void ProcessFlights()
 
+        { //Advance part a
+            Queue<Flight> unassignedFlightQueue = new Queue<Flight>();
 
+            // Identify unassigned flights
+            foreach (var flight in flightdict.Values)
+            {
+                if (!BGDict.Values.Any(gate => gate.Flight == flight))
+                {
+                    unassignedFlightQueue.Enqueue(flight);
+                }
+            }
 
+            // Count unassigned flights and gates
+            int unassignedFlights = unassignedFlightQueue.Count;
+            int unassignedGates = BGDict.Values.Count(gate => gate.Flight == null);
 
-        //Advance part a
+            Console.WriteLine($"Total Unassigned Flights: {unassignedFlights}");
+            Console.WriteLine($"Total Unassigned Boarding Gates: {unassignedGates}");
 
+            // Process each flight in the queue
+            int automaticallyAssignedFlights = 0;
+            int manuallyAssignedFlights = 0;
+            int alreadyAssignedFlights = flightdict.Count - unassignedFlights;
+
+            while (unassignedFlightQueue.Count > 0)
+            {
+                Flight flight = unassignedFlightQueue.Dequeue(); // Get the first flight
+
+                BoardingGate assignedGate = null;
+                string reqCode = GetSpecialRequestCode(flight);
+
+                // Find a matching unassigned boarding gate
+                foreach (var gate in BGDict.Values)
+                {
+                    if (gate.Flight == null) // Gate is unassigned
+                    {
+                        // Check if the gate supports the flight's special request
+                        if ((reqCode == "CFFT" && gate.SupportsCFFT) ||
+                            (reqCode == "DDJB" && gate.SupportsDDJB) ||
+                            (reqCode == "LWTT" && gate.SupportsLWTT) ||
+                            string.IsNullOrEmpty(reqCode)) // No special request
+                        {
+                            assignedGate = gate;
+                            break; // Stop searching
+                        }
+                    }
+                }
+
+                // Assign the gate to the flight
+                if (assignedGate != null)
+                {
+                    assignedGate.Flight = flight;
+                    automaticallyAssignedFlights++;
+
+                    // Print the flight details
+                    var flightCode = flight.FlightNumber.Split(' ')[0];
+
+                    var airlineName = airlineDict.ContainsKey(flightCode) ? airlineDict[flightCode].Name : "Unknown Airline";
+
+                    Console.WriteLine("\nFlight Assigned:");
+                    Console.WriteLine($"Flight Number: {flight.FlightNumber}");
+                    Console.WriteLine($"Airline Name: {airlineName}");
+                    Console.WriteLine($"Origin: {flight.Origin}");
+                    Console.WriteLine($"Destination: {flight.Destination}");
+                    Console.WriteLine($"Expected Departure/Arrival: {flight.ExpectedTime:dd/M/yyyy h:mm tt}");
+                    Console.WriteLine($"Special Request Code: {(string.IsNullOrEmpty(reqCode) ? "None" : reqCode)}");
+                    Console.WriteLine($"Boarding Gate: {assignedGate.GateName}");
+                    Console.WriteLine("Status: Assigned\n");
+                }
+                else
+                {
+                    Console.WriteLine($"No available gate for Flight {flight.FlightNumber} (Special Request: {reqCode})");
+                    manuallyAssignedFlights++;
+                }
+            }
+
+            // Display summary
+            int totalFlightsProcessed = flightdict.Count;
+            int totalGatesProcessed = BGDict.Count;
+            int alreadyAssignedGates = BGDict.Count - unassignedGates;
+
+            double flightAutoAssignPercentage = (double)automaticallyAssignedFlights / alreadyAssignedFlights * 100;
+            double gateAutoAssignPercentage = (double)automaticallyAssignedFlights / alreadyAssignedGates * 100;
+
+            Console.WriteLine("Summary of Flight and Boarding Gate Processing:");
+            Console.WriteLine($"Total Flights Processed: {totalFlightsProcessed}");
+            Console.WriteLine($"Total Boarding Gates Processed: {totalGatesProcessed}");
+            Console.WriteLine($"Already Assigned Flights: {alreadyAssignedFlights}");
+            Console.WriteLine($"Already Assigned Gates: {alreadyAssignedGates}");
+            Console.WriteLine($"Automatically Assigned Flights: {automaticallyAssignedFlights}");
+            Console.WriteLine($"Manually Assigned Flights: {manuallyAssignedFlights}");
+            Console.WriteLine($"Percentage of Automatically Assigned Flights: {flightAutoAssignPercentage:F2}%");
+            Console.WriteLine($"Percentage of Automatically Assigned Boarding Gates: {gateAutoAssignPercentage:F2}%");
+        }
+
+        // Helper method to get the special request code for a flight
+        static string GetSpecialRequestCode(Flight flight)
+        {
+            if (flight is CFFTFlight) return "CFFT";
+            if (flight is DDJBFlight) return "DDJB";
+            if (flight is LWTTFlight) return "LWTT";
+            return null;
+        }
+    }
 
 
 
@@ -737,5 +837,5 @@ internal class Program
         }
 
     }
-}
+
 
