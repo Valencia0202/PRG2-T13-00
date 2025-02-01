@@ -212,7 +212,7 @@ internal class Program
                 Console.WriteLine($"Origin: {selectedFlight.Origin}");
                 Console.WriteLine($"Destination: {selectedFlight.Destination}");
                 Console.WriteLine($"Expected Time: {selectedFlight.ExpectedTime}");
-                Console.Write(selectedFlight.Status);
+                Console.WriteLine($"Status: { selectedFlight.Status}");
                 string code = "";
                 if (selectedFlight is CFFTFlight)
                 {
@@ -380,7 +380,6 @@ internal class Program
 
             }
         }
-
 
 
         // 7)	Display full flight details from an airline(V)
@@ -661,9 +660,13 @@ internal class Program
                 {
                     boardinginfo = boardingGate.GateName; //print the assigned boarding gate
                 }
+                else
+                {
+                    boardinginfo = "Unassigned";
+                }
 
                 string formattedTime = flight.ExpectedTime.ToString("dd/MM/yyyy hh:mm:ss tt");
-                Console.WriteLine(flight + "\n" + "code:" + reqcode + "\n" + "BG:" + "Unassigned" + "\n" + "Status: Scheduled\n" + "Departure: " + formattedTime);
+                Console.WriteLine(flight + "\n" + "code:" + reqcode + "\n" + "Boarding Gate:" + boardinginfo + "\n" + "Status: Scheduled\n" + "Departure: " + formattedTime);
             }
         }
         
