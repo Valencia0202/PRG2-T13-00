@@ -12,6 +12,8 @@ internal class Program
 {
     static void Main(string[] args)
     {
+        Terminal terminal = new Terminal("Terminal 5");
+
         // 1)	Load files (airlines and boarding gates)a
         //load the airlines.csv file
         string[] csvlinesAirline = File.ReadAllLines("airlines.csv");
@@ -132,17 +134,22 @@ internal class Program
                     AssignBG(flightdict, BGDict);
                     break;
                 case "4":
-                    // Implement Create Flight functionality
+                    Createflight();
                     break;
                 case "5":
-                    // Implement Display Airline Flights functionality
+                    DisplayAirlineFlight();
                     break;
                 case "6":
-                    // Implement Modify Flight Details functionality
+                    ModifyFlightDetails();
                     break;
                 case "7":
                     SortedFlights();
-
+                    break;
+                case "8":
+                    ProcessFlights();
+                    break;
+                case "9":
+                    DisplayFeePerAirline(terminal);
                     // Implement Display Flight Schedule functionality
                     break;
                 case "0":
@@ -665,10 +672,12 @@ internal class Program
                 Console.WriteLine(flight + "\n" + "code:" + reqcode + "\n" + "BG:" + "Unassigned" + "\n" + "Status: Scheduled\n" + "Departure: " + formattedTime);
             }
         }
-        
+
+
+        //Advance part a
         void ProcessFlights()
 
-        { //Advance part a
+        {
             Queue<Flight> unassignedFlightQueue = new Queue<Flight>();
 
             // Identify unassigned flights
@@ -771,17 +780,14 @@ internal class Program
             if (flight is LWTTFlight) return "LWTT";
             return null;
         }
-    }
 
 
 
         //Advance part b
-        static void  DisplayFeePerAirline(Dictionary<string, Airline> airlineDict, Dictionary<string, BoardingGate> BGDict)
+        static void DisplayFeePerAirline(Terminal terminal)
         {
             // Check if all flights have their Boarding Gate assigned
-            bool allAssigned = airlineDict.Values
-                .SelectMany(a => a.Flights.Values)
-                .All(f => BGDict.Values.Any(gate => gate.Flight == f));
+            bool allAssigned = terminal.Flights.Values.All(f => terminal.BoardingGates.Values.Any(gate => gate.Flight == f));
 
             if (!allAssigned)
             {
@@ -793,27 +799,29 @@ internal class Program
             const double DiscountAmount = 25;
             HashSet<string> DiscountOrigins = new() { "DXB", "BKK", "NRT" };
 
-            foreach (var airline in airlineDict.Values)
+            foreach (var airline in terminal.Airlines.Values)
             {
                 double airlineSubtotal = 0, airlineDiscounts = 0;
 
-                var flights = airline.Flights.Values.ToList();
+                var flights = terminal.Flights.Values.Where(f => terminal.GetAirlineFromFlight(f) == airline).ToList();
                 if (!flights.Any())
                 {
                     Console.WriteLine($"Airline {airline.Name} has no flights.");
                     continue;
                 }
 
-                // Calculate total fees for the airline
-                airlineSubtotal = airline.CalculateFees(
-                    destination: flights.First().Destination,
-                    origin: flights.First().Origin,
-                    totalFlights: flights.Count,
-                    flights: flights
-                );
+                foreach (var flight in flights)
+                {
+                    // Calculate fees for the flight
+                    double flightFee = flight.CalculateFees();
+                    airlineSubtotal += flightFee;
 
-                // Apply promotional discounts based on flight origin
-                airlineDiscounts = flights.Count(f => DiscountOrigins.Contains(f.Origin)) * DiscountAmount;
+                    // Apply promotional discounts based on flight origin
+                    if (DiscountOrigins.Contains(flight.Origin))
+                    {
+                        airlineDiscounts += DiscountAmount;
+                    }
+                }
 
                 double finalFee = airlineSubtotal - airlineDiscounts;
                 totalFees += airlineSubtotal;
@@ -835,7 +843,5 @@ internal class Program
             Console.WriteLine($"Final Total Fees: ${finalTotal:F2}");
             Console.WriteLine($"Discount Percentage: {discountPercentage:F2}%");
         }
-
     }
-
-
+}
