@@ -577,67 +577,68 @@ internal class Program
 
             }
         }
-    
-    //Advance part b
+
+        //Advance part b
 
         void DisplayFeePerAirline(Dictionary<string, Airline> airlineDict, Dictionary<string, BoardingGate> BGDict)
         {
-            Flight flightN = flightdict[flightNumber];
             // Check if all flights have their Boarding Gate assigned
-            var boardingGate = BGDict.Values.FirstOrDefault(gate => gate.Flight == flightN); // Assuming 'flight' is defined elsewhere
+            bool allAssigned = airlineDict.Values
+                .SelectMany(a => a.Flights.Values)
+                .All(f => BGDict.Values.Any(gate => gate.Flight == f));
 
-            bool allAssigned = airlines.SelectMany(a => a.Flights.Values).All(f => f.boardingGate != null);
             if (!allAssigned)
             {
-            Console.WriteLine("Ensure all flights have their Boarding Gates assigned before running this feature again.");
-            return;
+                Console.WriteLine("Ensure all flights have their Boarding Gates assigned before running this feature again.");
+                return;
             }
 
             double totalFees = 0, totalDiscounts = 0;
             const double DiscountAmount = 25;
             HashSet<string> DiscountOrigins = new() { "DXB", "BKK", "NRT" };
 
-        foreach (var airline in airlines)
-        {
-            double airlineSubtotal = 0, airlineDiscounts = 0;
-
-            var flights = airline.Flights.Values.ToList();
-            if (!flights.Any())
+            foreach (var airline in airlineDict.Values)
             {
-                Console.WriteLine($"Airline {airline.Name} has no flights.");
-                continue;
+                double airlineSubtotal = 0, airlineDiscounts = 0;
+
+                var flights = airline.Flights.Values.ToList();
+                if (!flights.Any())
+                {
+                    Console.WriteLine($"Airline {airline.Name} has no flights.");
+                    continue;
+                }
+
+                // Calculate total fees for the airline
+                airlineSubtotal = airline.CalculateFees(
+                    destination: flights.First().Destination,
+                    origin: flights.First().Origin,
+                    totalFlights: flights.Count,
+                    flights: flights
+                );
+
+                // Apply promotional discounts based on flight origin
+                airlineDiscounts = flights.Count(f => DiscountOrigins.Contains(f.Origin)) * DiscountAmount;
+
+                double finalFee = airlineSubtotal - airlineDiscounts;
+                totalFees += airlineSubtotal;
+                totalDiscounts += airlineDiscounts;
+
+                Console.WriteLine($"Airline: {airline.Name}");
+                Console.WriteLine($"  Subtotal Fees: ${airlineSubtotal:F2}");
+                Console.WriteLine($"  Discounts: -${airlineDiscounts:F2}");
+                Console.WriteLine($"  Final Fee: ${finalFee:F2}\n");
             }
 
-            // Calculate total fees for the airline
-            airlineSubtotal = airline.CalculateFees(
-                destination: flights.First().Destination,
-                origin: flights.First().Origin,
-                totalFlights: flights.Count,
-                flights: flights
-            );
+            // Calculate final totals and discount percentage
+            double finalTotal = totalFees - totalDiscounts;
+            double discountPercentage = totalFees > 0 ? (totalDiscounts / totalFees) * 100 : 0;
 
-            // Apply promotional discounts based on flight origin
-            airlineDiscounts = flights.Count(f => DiscountOrigins.Contains(f.Origin)) * DiscountAmount;
-
-            double finalFee = airlineSubtotal - airlineDiscounts;
-            totalFees += airlineSubtotal;
-            totalDiscounts += airlineDiscounts;
-
-            Console.WriteLine($"Airline: {airline.Name}");
-            Console.WriteLine($"  Subtotal Fees: ${airlineSubtotal:F2}");
-            Console.WriteLine($"  Discounts: -${airlineDiscounts:F2}");
-            Console.WriteLine($"  Final Fee: ${finalFee:F2}\n");
+            Console.WriteLine("--- Summary for the Day ---");
+            Console.WriteLine($"Total Subtotal Fees: ${totalFees:F2}");
+            Console.WriteLine($"Total Discounts: -${totalDiscounts:F2}");
+            Console.WriteLine($"Final Total Fees: ${finalTotal:F2}");
+            Console.WriteLine($"Discount Percentage: {discountPercentage:F2}%");
         }
-
-        // Calculate final totals and discount percentage
-        double finalTotal = totalFees - totalDiscounts;
-        double discountPercentage = totalFees > 0 ? (totalDiscounts / totalFees) * 100 : 0;
-
-        Console.WriteLine("--- Summary for the Day ---");
-        Console.WriteLine($"Total Subtotal Fees: ${totalFees:F2}");
-        Console.WriteLine($"Total Discounts: -${totalDiscounts:F2}");
-        Console.WriteLine($"Final Total Fees: ${finalTotal:F2}");
-        Console.WriteLine($"Discount Percentage: {discountPercentage:F2}%");
     }
 }
 
