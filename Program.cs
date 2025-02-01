@@ -120,6 +120,7 @@ internal class Program
         while (true)
 
         {
+
             Displaymenu();
             Console.Write("Please select your option: ");
             string option = Console.ReadLine();
