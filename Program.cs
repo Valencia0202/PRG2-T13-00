@@ -442,9 +442,9 @@ internal class Program
                             Console.WriteLine($"Origin: {flightToModify.Origin,-20}");
                             Console.WriteLine($"Destination: {flightToModify.Destination,-20}");
                             Console.WriteLine($"Expected Departure/Arrival Time: {T.ToString("dd/MM/yyyy hh:mm tt"),-25}");
-                            Console.WriteLine($"{flightToModify.Status,-20}"); 
-                            Console.WriteLine($"{reqcode,-15}");
-                            Console.WriteLine($"Boarding Gate : {flightToModify.Origin,-20}");
+                            Console.WriteLine($"Status: {flightToModify.Status,-20}"); 
+                            Console.WriteLine($"Special Request Code: {reqcode,-15}");
+                            Console.WriteLine($"Boarding Gate: {flightToModify.Origin,-20}");
 
                             break;
 
