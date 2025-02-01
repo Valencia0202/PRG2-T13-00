@@ -113,44 +113,45 @@ internal class Program
             Console.WriteLine("7. Display Flight Schedule");
             Console.WriteLine("0. Exit");
         }
-        while(true)
+        while (true)
 
+        {
+            Displaymenu();
+            Console.Write("Please select your option: ");
+            string option = Console.ReadLine();
+
+            switch (option)
             {
-                Displaymenu();
-                Console.Write("Please select your option: ");
-                string option = Console.ReadLine();
-
-                switch (option)
-                {
-                    case "1":
-                        Displayflights();
-                        break;
-                    case "2":
-                        ListBG(BGDict);
-                        break;
-                    case "3":
-                        AssignBG(flightdict, BGDict);
-                        break;
-                    case "4":
-                        // Implement Create Flight functionality
-                        break;
-                    case "5":
-                        // Implement Display Airline Flights functionality
-                        break;
-                    case "6":
-                        // Implement Modify Flight Details functionality
-                        break;
-                    case "7":
-                        // Implement Display Flight Schedule functionality
-                        break;
-                    case "0":
-                        Console.WriteLine("Exiting...");
-                        return; // Exit the program
-                    default:
-                        Console.WriteLine("Invalid option, please try again.");
-                        break;
-                }
+                case "1":
+                    DisplayFeePerAirline(airlineDict, BGDict);
+                    break;
+                case "2":
+                    ListBG(BGDict);
+                    break;
+                case "3":
+                    AssignBG(flightdict, BGDict);
+                    break;
+                case "4":
+                    // Implement Create Flight functionality
+                    break;
+                case "5":
+                    // Implement Display Airline Flights functionality
+                    break;
+                case "6":
+                    // Implement Modify Flight Details functionality
+                    break;
+                case "7":
+                    // Implement Display Flight Schedule functionality
+                    break;
+                case "0":
+                    Console.WriteLine("Exiting...");
+                    return; // Exit the program
+                default:
+                    Console.WriteLine("Invalid option, please try again.");
+                    break;
             }
+        }
+    }
 
         // 3)	List all flights with their basic information
         void Displayflights()
@@ -615,13 +616,13 @@ internal class Program
 
 
         //Advance part b
-        void DisplayFeePerAirline(Dictionary<string, Airline>)
+        static void  DisplayFeePerAirline(Dictionary<string, Airline> airlineDict, Dictionary<string, BoardingGate> BGDict)
         {
-            Flight flightN = flightdict[flightNumber];
             // Check if all flights have their Boarding Gate assigned
-            var boardingGate = BGDict.Values.FirstOrDefault(gate => gate.Flight == flightN); // Assuming 'flight' is defined elsewhere
+            bool allAssigned = airlineDict.Values
+                .SelectMany(a => a.Flights.Values)
+                .All(f => BGDict.Values.Any(gate => gate.Flight == f));
 
-            bool allAssigned = airlines.SelectMany(a => a.Flights.Values).All(f => f.boardingGate != null);
             if (!allAssigned)
             {
                 Console.WriteLine("Ensure all flights have their Boarding Gates assigned before running this feature again.");
@@ -632,7 +633,7 @@ internal class Program
             const double DiscountAmount = 25;
             HashSet<string> DiscountOrigins = new() { "DXB", "BKK", "NRT" };
 
-            foreach (var airline in airlines)
+            foreach (var airline in airlineDict.Values)
             {
                 double airlineSubtotal = 0, airlineDiscounts = 0;
 
