@@ -440,9 +440,6 @@ internal class Program
                             Console.WriteLine($"Expected Time: {T}");
                             Console.WriteLine($"{flightToModify.FlightNumber,-15}{flightToModify.Origin,-20}{flightToModify.Destination,-20}{flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}{flightToModify.Status,-15}{reqcode,-15}");
 
-
-
-
                             break;
 
                         case "2":
@@ -552,8 +549,11 @@ internal class Program
                 }
 
             }
-       
-        } ModifyFlightDetails();
+
+        }
+        AssignBG(flightdict, BGDict);
+        ModifyFlightDetails();
+
     }
 }
 
