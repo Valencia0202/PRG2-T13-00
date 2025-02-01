@@ -488,7 +488,19 @@ internal class Program
                             Console.Write("Enter new Destination: ");
                             flightToModify.Destination = Console.ReadLine();
                             Console.Write("Enter new Expected Time (dd/MM/yyyy HH:mm): ");
-                            DateTime T = Convert.ToDateTime(Console.ReadLine());
+                            string dateTimeString = Console.ReadLine();
+
+                            DateTime expectedTime;
+                            if (DateTime.TryParseExact(dateTimeString, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out expectedTime))
+                            {
+                                flightToModify.ExpectedTime = expectedTime;
+                                Console.WriteLine("Expected time updated successfully.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid date/time format. Please use dd/MM/yyyy HH:mm.");
+                                // You might want to handle this error more robustly, like prompting the user again.
+                            }
 
                             Console.WriteLine($"Flight Number: {flightToModify.FlightNumber,-15}");
                             Console.WriteLine($"Airline Name: ");
@@ -791,6 +803,7 @@ internal class Program
         //Advance part b
         static void DisplayFeePerAirline(Terminal terminal)
         {
+            Console.WriteLine(terminal);
             // Check if all flights have their Boarding Gate assigned
             bool allAssigned = terminal.Flights.Values.All(f => terminal.BoardingGates.Values.Any(gate => gate.Flight == f));
 
