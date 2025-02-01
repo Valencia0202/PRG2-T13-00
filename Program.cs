@@ -180,7 +180,7 @@ internal class Program
         static void ListBG(Dictionary<string, BoardingGate> BGDict)
         {
             Console.WriteLine("=============================================");
-            Console.WriteLine("List of Borading Gatess for Changi Airport Terminal 5");
+            Console.WriteLine("List of Borading Gates for Changi Airport Terminal 5");
             Console.WriteLine("=============================================");
             Console.WriteLine($"{"GateName",-15}{"DDJB",-20}{"CFFT",-20}{"LWTT",-20}");
             foreach (var item in BGDict)
