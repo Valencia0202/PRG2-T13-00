@@ -445,7 +445,7 @@ internal class Program
                             Console.WriteLine($"Origin: {flightToModify.Origin,-20}");
                             Console.WriteLine($"Destination: {flightToModify.Destination,-20}");
                             Console.WriteLine($"Expected Departure/Arrival Time: {T.ToString("dd/MM/yyyy hh:mm tt"),-25}");
-                            Console.WriteLine($"Status: {flightToModify.Status,-20}"); 
+                            Console.WriteLine($"Status: {flightToModify.Status,-20}");
                             Console.WriteLine($"Special Request Code: {reqcode,-15}");
                             Console.WriteLine($"Boarding Gate: {gateNumber,-20}");
 
@@ -455,8 +455,15 @@ internal class Program
                             Console.Write("Enter new Status: ");
                             flightToModify.Status = Console.ReadLine();
                             Console.WriteLine("Status updated successfully.");
-                            Console.WriteLine($"{flightToModify.FlightNumber,-15}{flightToModify.Origin,-20}{flightToModify.Destination,-20}{flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}{reqcode,-15}{flightToModify.Status,-15}");
-
+                            Console.WriteLine("");
+                            Console.WriteLine($"Flight Number: {flightToModify.FlightNumber,-15}");
+                            Console.WriteLine($"Airline Name: ");
+                            Console.WriteLine($"Origin: {flightToModify.Origin,-20}");
+                            Console.WriteLine($"Destination: {flightToModify.Destination,-20}");
+                            Console.WriteLine($"Expected Departure/Arrival Time: {flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}");
+                            Console.WriteLine($"Status: {flightToModify.Status,-20}");
+                            Console.WriteLine($"Special Request Code: {reqcode,-15}");
+                            Console.WriteLine($"Boarding Gate: {gateNumber,-20}");
                             break;
 
                         case "3":
@@ -467,8 +474,14 @@ internal class Program
                             {
                                 string SpecialRequestCode = specialRequest;
                                 Console.WriteLine("Special Request Code updated successfully.");
-                                Console.WriteLine($"{flightToModify.FlightNumber,-15}{flightToModify.Origin,-20}{flightToModify.Destination,-20}{flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}{flightToModify.Status,-15}{SpecialRequestCode,-15}");
-
+                                Console.WriteLine($"Flight Number: {flightToModify.FlightNumber,-15}");
+                                Console.WriteLine($"Airline Name: ");
+                                Console.WriteLine($"Origin: {flightToModify.Origin,-20}");
+                                Console.WriteLine($"Destination: {flightToModify.Destination,-20}");
+                                Console.WriteLine($"Expected Departure/Arrival Time: {flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}");
+                                Console.WriteLine($"Status: {flightToModify.Status,-20}");
+                                Console.WriteLine($"Special Request Code: {SpecialRequestCode,-15}");
+                                Console.WriteLine($"Boarding Gate: {gateNumber,-20}");
                             }
                             else
                             {
@@ -480,12 +493,14 @@ internal class Program
                         case "4":
                             string assignedGate = BGDict.Values.FirstOrDefault(g => g.Flight == flightToModify)?.GateName ?? "None";
                             Console.WriteLine("Available Boarding Gates:");
-                            Console.WriteLine($"{"Gate Name",-15}{"Supports DDJB",-15}{"Supports CFFT",-15}{"Supports LWTT",-15}");
+                            Console.WriteLine($"{"Gate Name",-15}{"Supports DDJB",-15}{"Supports CFFT",-15}{"Supports LWTT",-15}{"Assigned Flight",-20}");
 
                             foreach (var gate in BGDict.Values)
                             {
-                                Console.WriteLine($"{gate.GateName,-15}{gate.SupportsDDJB,-15}{gate.SupportsCFFT,-15}{gate.SupportsLWTT,-15}");
+                                string assignedFlight = gate.Flight != null ? gate.Flight.FlightNumber : "None"; // ✅ Check if a flight is assigned
+                                Console.WriteLine($"{gate.GateName,-15}{gate.SupportsDDJB,-15}{gate.SupportsCFFT,-15}{gate.SupportsLWTT,-15}{assignedFlight,-20}");
                             }
+
 
                             Console.Write("Enter new Boarding Gate: ");
                             string newGate = Console.ReadLine().Trim().ToUpper();
@@ -505,7 +520,14 @@ internal class Program
                                 {
                                     // Update the gate's assigned flight
                                     selectedGate.Flight = flightToModify;
-                                    Console.WriteLine($"{flightToModify.FlightNumber,-15}{flightToModify.Origin,-20}{flightToModify.Destination,-20}{flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}{flightToModify.Status,-15}{assignedGate,-15}");
+                                    Console.WriteLine($"Flight Number: {flightToModify.FlightNumber,-15}");
+                                    Console.WriteLine($"Airline Name: ");
+                                    Console.WriteLine($"Origin: {flightToModify.Origin,-20}");
+                                    Console.WriteLine($"Destination: {flightToModify.Destination,-20}");
+                                    Console.WriteLine($"Expected Departure/Arrival Time: {flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}");
+                                    Console.WriteLine($"Status: {flightToModify.Status,-20}");
+                                    Console.WriteLine($"Special Request Code: {reqcode,-15}");
+                                    Console.WriteLine($"Boarding Gate: {selectedGate.Flight,-20}");
                                 }
 
                             }
@@ -519,11 +541,9 @@ internal class Program
                             return;
                     }
                     flightdict[flightNumber] = flightToModify;
-
-                    // Display updated flight details
-                    Console.WriteLine($"{"Flight Number",-15}{"Origin",-20}{"Destination",-20}{"Expected Time",-25}{"Status",-15}{"Special Request",-15}{"Boarding Gate",-15}");
-                    Console.WriteLine($"{flightToModify.FlightNumber,-15}{flightToModify.Origin,-20}{flightToModify.Destination,-20}{flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}{flightToModify.Status,-15}{reqcode,-15}");
                 }
+
+
                 else if (choice == 2)
                 {
                     Console.Write("Are you sure that you would like to delete the flight? (Y/N): ");
