@@ -437,8 +437,14 @@ internal class Program
                             flightToModify.Destination = Console.ReadLine();
                             Console.Write("Enter new Expected Time (dd/MM/yyyy HH:mm): ");
                             DateTime T = Convert.ToDateTime(Console.ReadLine());
-                            Console.WriteLine($"Expected Time: {T}");
-                            Console.WriteLine($"{flightToModify.FlightNumber,-15}{flightToModify.Origin,-20}{flightToModify.Destination,-20}{flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}{flightToModify.Status,-15}{reqcode,-15}");
+                            Console.WriteLine($"Flight Number: {flightToModify.FlightNumber,-15}");
+                            Console.WriteLine($"Airline Name: ");
+                            Console.WriteLine($"Origin: {flightToModify.Origin,-20}");
+                            Console.WriteLine($"Destination: {flightToModify.Destination,-20}");
+                            Console.WriteLine($"Expected Departure/Arrival Time: {T.ToString("dd/MM/yyyy hh:mm tt"),-25}");
+                            Console.WriteLine($"{flightToModify.Status,-20}"); 
+                            Console.WriteLine($"{reqcode,-15}");
+                            Console.WriteLine($"Boarding Gate : {flightToModify.Origin,-20}");
 
                             break;
 
@@ -513,7 +519,7 @@ internal class Program
 
                     // Display updated flight details
                     Console.WriteLine($"{"Flight Number",-15}{"Origin",-20}{"Destination",-20}{"Expected Time",-25}{"Status",-15}{"Special Request",-15}{"Boarding Gate",-15}");
-                    Console.WriteLine($"{flightToModify.FlightNumber,-15}{flightToModify.Origin,-20}{flightToModify.Destination,-20}{flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}{flightToModify.Status,-15}{reqcode,-15}{}");
+                    Console.WriteLine($"{flightToModify.FlightNumber,-15}{flightToModify.Origin,-20}{flightToModify.Destination,-20}{flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}{flightToModify.Status,-15}{reqcode,-15}");
                 }
                 else if (choice == 2)
                 {
