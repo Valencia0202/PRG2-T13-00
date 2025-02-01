@@ -308,40 +308,44 @@ internal class Program
             while (true)
             {
                 Console.Write("Enter Flight Number:");
-                Console.Write("Flight Number:");
                 var flightno = Console.ReadLine();
-                Console.Write("Origin: ");
+                Console.Write("Enter Origin: ");
                 string origin = Console.ReadLine();
-                Console.Write("Destination:");
+                Console.Write("Enter Destination:");
                 string dest = Console.ReadLine();
                 Console.Write("Enter Expected Departure/Arrival Time (dd/mm/yyyy hh:mm):");
                 DateTime ET = Convert.ToDateTime(Console.ReadLine());
+
+
                 Console.WriteLine("Enter Special Request Code (CFFT/DDJB/LWTT/None):");
                 string code = Console.ReadLine();
 
                 Airline airline = new Airline();
+
                 if (code == "None")
                 {
                     Flight flights = new NORMFlight(flightno, origin, dest, ET, "On Time");
                     airline.AddFlight(flights);
+                    flightdict.Add(flights.FlightNumber, flights);
                 }
 
                 else if (code == "DDJB")
                 {
                     Flight flights = new DDJBFlight(flightno, origin, dest, ET, "On Time", 300.00);
                     airline.AddFlight(flights);
+                    flightdict.Add(flights.FlightNumber, flights);
                 }
                 else if (code == "CFFT")
                 {
                     Flight flights = new CFFTFlight(flightno, origin, dest, ET, "On Time", 150.00);
                     airline.AddFlight(flights);
-
+                    flightdict.Add(flights.FlightNumber, flights);
                 }
                 else if (code == "LWTT")
                 {
                     Flight flights = new LWTTFlight(flightno, origin, dest, ET, "On Time", 500.00);
                     airline.AddFlight(flights);
-
+                    flightdict.Add(flights.FlightNumber, flights);
                 }
 
                 //append new info to csv file
@@ -372,10 +376,11 @@ internal class Program
                 {
                     break;
                 }
-                break;
 
-            } 
+            }
         }
+
+        Createflight();
 
 
         // 7)	Display full flight details from an airline(V)
