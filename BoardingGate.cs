@@ -33,8 +33,8 @@ namespace PRG2_T13_00
         public override string ToString()
         {
             return $"Name: {GateName}\n" +
-                   $"CFFT: {SupportsCFFT}\n" +
-                   $"DDJB:  {SupportsDDJB}\n" +
+                   $"DDJB: {SupportsDDJB}\n"+
+                   $"CFFT: {SupportsCFFT}\n" +                  
                    $"LWTT: {SupportsLWTT}";
         }
     }

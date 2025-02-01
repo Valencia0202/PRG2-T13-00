@@ -209,11 +209,11 @@ internal class Program
                 {
                     code = "LWTT";
                 }
-                else if (selectedFlight is CFFTFlight)
+                else if (selectedFlight is DDJBFlight)
                 {
-                    code = "CFFT";
+                    code = "DDJB";
                 }
-                else
+                else if(selectedFlight is NORMFlight)
                 {
                     code = "None";
                 }
@@ -223,6 +223,7 @@ internal class Program
                 {
                     Console.WriteLine("Enter Boarding Gate: ");
                     string boardingGateName = Console.ReadLine();
+                    
                     if (!BGDict.ContainsKey(boardingGateName))
                     {
                         Console.WriteLine("Invalid Boarding Gate. Please try again.");
@@ -236,7 +237,14 @@ internal class Program
                         Console.WriteLine($"The Boarding Gate {boardingGateName} is already assigned to Flight {boardingGate.Flight.FlightNumber}.");
                         continue;
                     }
-                    boardingGate.Flight = selectedFlight;
+                    if ((code == "CFFT" && !boardingGate.SupportsCFFT) ||
+                        (code == "DDJB" && !boardingGate.SupportsDDJB) ||
+                        (code == "LWTT" && !boardingGate.SupportsLWTT))
+                    {
+                        Console.WriteLine($"The Boarding Gate {boardingGateName} does not support the special request code {code}. Please try again."); //user validaton for boarding gate inputs that do not match special req codes
+                        continue;
+                    }
+                        boardingGate.Flight = selectedFlight;
                     Console.WriteLine(boardingGate.ToString());
 
                     Console.WriteLine("Would you like to update the status of the flight? (Y/N)");
@@ -279,7 +287,7 @@ internal class Program
             }
 
         }
-        //AssignBG(flightdict, BGDict);
+        AssignBG(flightdict, BGDict);
         // 6)	Create a new flight
 
         void Createflight()
