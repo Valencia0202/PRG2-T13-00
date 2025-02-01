@@ -577,14 +577,15 @@ internal class Program
 
             }
         }
-
+    
     //Advance part b
-    public void DisplayFeePerAirline(List<Airline> airlines)
+    void DisplayFeePerAirline(Dictionary<string, Airline>)
     {
+        Flight flightN = flightdict[flightNumber];
         // Check if all flights have their Boarding Gate assigned
-        var boardingGate = BGDict.Values.FirstOrDefault(gate => gate.Flight == flight); // Assuming 'flight' is defined elsewhere
+        var boardingGate = BGDict.Values.FirstOrDefault(gate => gate.Flight == flightN); // Assuming 'flight' is defined elsewhere
 
-        bool allAssigned = airlines.SelectMany(a => a.Flights.Values).All(f => f.BoardingGate != null);
+        bool allAssigned = airlines.SelectMany(a => a.Flights.Values).All(f => f.boardingGate != null);
         if (!allAssigned)
         {
             Console.WriteLine("Ensure all flights have their Boarding Gates assigned before running this feature again.");
