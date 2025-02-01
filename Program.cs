@@ -10,10 +10,11 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 // Valencia features 1, 4, 7 & 8.  
 internal class Program
 {
+
     static void Main(string[] args)
     {
         Terminal terminal = new Terminal("Terminal 5");
-
+        Console.WriteLine(terminal);
         // 1)	Load files (airlines and boarding gates)a
         //load the airlines.csv file
         string[] csvlinesAirline = File.ReadAllLines("airlines.csv");
@@ -112,6 +113,8 @@ internal class Program
             Console.WriteLine("5. Display Airline Flights");
             Console.WriteLine("6. Modify Flight Details");
             Console.WriteLine("7. Display Flight Schedule");
+            Console.WriteLine("8. Mass Assign Gate");
+            Console.WriteLine("9. Fees per Airline");
             Console.WriteLine("0. Exit");
         }
         while (true)
@@ -148,6 +151,8 @@ internal class Program
                     ProcessFlights();
                     break;
                 case "9":
+                    terminal.AddAirline(airlineDict);
+                    terminal.AddBoardingGate(BGDict);
                     DisplayFeePerAirline(terminal);
                     // Implement Display Flight Schedule functionality
                     break;
