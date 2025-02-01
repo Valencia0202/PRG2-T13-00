@@ -113,45 +113,46 @@ internal class Program
             Console.WriteLine("7. Display Flight Schedule");
             Console.WriteLine("0. Exit");
         }
-        while (true)
+        while(true)
 
-        {
-            Displaymenu();
-            Console.Write("Please select your option: ");
-            string option = Console.ReadLine();
-
-            switch (option)
             {
-                case "1":
-                    DisplayFeePerAirline(airlineDict, BGDict);
-                    break;
-                case "2":
-                    ListBG(BGDict);
-                    break;
-                case "3":
-                    AssignBG(flightdict, BGDict);
-                    break;
-                case "4":
-                    // Implement Create Flight functionality
-                    break;
-                case "5":
-                    // Implement Display Airline Flights functionality
-                    break;
-                case "6":
-                    // Implement Modify Flight Details functionality
-                    break;
-                case "7":
-                    // Implement Display Flight Schedule functionality
-                    break;
-                case "0":
-                    Console.WriteLine("Exiting...");
-                    return; // Exit the program
-                default:
-                    Console.WriteLine("Invalid option, please try again.");
-                    break;
+                Displaymenu();
+                Console.Write("Please select your option: ");
+                string option = Console.ReadLine();
+
+                switch (option)
+                {
+                    case "1":
+                        Displayflights();
+                        break;
+                    case "2":
+                        ListBG(BGDict);
+                        break;
+                    case "3":
+                        AssignBG(flightdict, BGDict);
+                        break;
+                    case "4":
+                        // Implement Create Flight functionality
+                        break;
+                    case "5":
+                        // Implement Display Airline Flights functionality
+                        break;
+                    case "6":
+                        // Implement Modify Flight Details functionality
+                        break;
+                    case "7":
+                    SortedFlights();
+
+                        // Implement Display Flight Schedule functionality
+                        break;
+                    case "0":
+                        Console.WriteLine("Exiting...");
+                        return; // Exit the program
+                    default:
+                        Console.WriteLine("Invalid option, please try again.");
+                        break;
+                }
             }
-        }
-    }
 
         // 3)	List all flights with their basic information
         void Displayflights()
@@ -220,11 +221,11 @@ internal class Program
                 {
                     code = "LWTT";
                 }
-                else if (selectedFlight is CFFTFlight)
+                else if (selectedFlight is DDJBFlight)
                 {
-                    code = "CFFT";
+                    code = "DDJB";
                 }
-                else
+                else if (selectedFlight is NORMFlight)
                 {
                     code = "None";
                 }
@@ -234,6 +235,7 @@ internal class Program
                 {
                     Console.WriteLine("Enter Boarding Gate: ");
                     string boardingGateName = Console.ReadLine();
+
                     if (!BGDict.ContainsKey(boardingGateName))
                     {
                         Console.WriteLine("Invalid Boarding Gate. Please try again.");
@@ -245,6 +247,13 @@ internal class Program
                     if (boardingGate.Flight != null)
                     {
                         Console.WriteLine($"The Boarding Gate {boardingGateName} is already assigned to Flight {boardingGate.Flight.FlightNumber}.");
+                        continue;
+                    }
+                    if ((code == "CFFT" && !boardingGate.SupportsCFFT) ||
+                        (code == "DDJB" && !boardingGate.SupportsDDJB) ||
+                        (code == "LWTT" && !boardingGate.SupportsLWTT))
+                    {
+                        Console.WriteLine($"The Boarding Gate {boardingGateName} does not support the special request code {code}. Please try again."); //user validaton for boarding gate inputs that do not match special req codes
                         continue;
                     }
                     boardingGate.Flight = selectedFlight;
@@ -298,40 +307,44 @@ internal class Program
             while (true)
             {
                 Console.Write("Enter Flight Number:");
-                Console.Write("Flight Number:");
                 var flightno = Console.ReadLine();
-                Console.Write("Origin: ");
+                Console.Write("Enter Origin: ");
                 string origin = Console.ReadLine();
-                Console.Write("Destination:");
+                Console.Write("Enter Destination:");
                 string dest = Console.ReadLine();
                 Console.Write("Enter Expected Departure/Arrival Time (dd/mm/yyyy hh:mm):");
                 DateTime ET = Convert.ToDateTime(Console.ReadLine());
+
+
                 Console.WriteLine("Enter Special Request Code (CFFT/DDJB/LWTT/None):");
                 string code = Console.ReadLine();
 
                 Airline airline = new Airline();
+
                 if (code == "None")
                 {
                     Flight flights = new NORMFlight(flightno, origin, dest, ET, "On Time");
                     airline.AddFlight(flights);
+                    flightdict.Add(flights.FlightNumber, flights);
                 }
 
                 else if (code == "DDJB")
                 {
                     Flight flights = new DDJBFlight(flightno, origin, dest, ET, "On Time", 300.00);
                     airline.AddFlight(flights);
+                    flightdict.Add(flights.FlightNumber, flights);
                 }
                 else if (code == "CFFT")
                 {
                     Flight flights = new CFFTFlight(flightno, origin, dest, ET, "On Time", 150.00);
                     airline.AddFlight(flights);
-
+                    flightdict.Add(flights.FlightNumber, flights);
                 }
                 else if (code == "LWTT")
                 {
                     Flight flights = new LWTTFlight(flightno, origin, dest, ET, "On Time", 500.00);
                     airline.AddFlight(flights);
-
+                    flightdict.Add(flights.FlightNumber, flights);
                 }
 
                 //append new info to csv file
@@ -362,10 +375,11 @@ internal class Program
                 {
                     break;
                 }
-                break;
 
-            } 
+            }
         }
+
+        Createflight();
 
 
         // 7)	Display full flight details from an airline(V)
@@ -611,6 +625,52 @@ internal class Program
         }
         //9 Display Scheduled flights
 
+        void SortedFlights()
+        {
+            var sortedFlights = flightdict.Values.ToList();
+
+            sortedFlights.Sort();
+            Console.WriteLine("Scheduled Flights for the Day:\n");
+            string reqcode = "";
+            foreach (var flight in sortedFlights)
+            {
+                if (flight is LWTTFlight)
+                {
+                    reqcode = "LWTT";
+                }
+                else if (flight is DDJBFlight)
+                {
+                    reqcode = "DDJB";
+                }
+                else if (flight is CFFTFlight)
+                {
+                    reqcode = "CFFT";
+                }
+                //BoardingGate boardingGate = null;
+                //foreach (var gate in BGDict.Values)
+                //{
+                //    if (gate.Flight == flight)  // Check if this gate is assigned to the flight
+                //    {
+                //        boardingGate = gate;
+                //        break;
+                //    }
+                //}
+                //string boardinginfo = " ";
+                //if (boardingGate != null)
+                //{
+                //    boardinginfo = boardingGate.GateName; //print the assigned boarding gate
+                //}
+
+                string formattedTime = flight.ExpectedTime.ToString("dd/MM/yyyy hh:mm:ss tt");
+                Console.WriteLine(flight + "\n" + "code:" + reqcode + "\n" + "BG:" + "Unassigned" + "\n" + "Status: Scheduled\n" + "Departure: " + formattedTime);
+            }
+        }
+        SortedFlights();
+
+
+
+
+        //Advance part a
 
 
 
