@@ -427,6 +427,8 @@ internal class Program
 
                     // Retrieve the flight to modify
                     Flight flightToModify = flightdict[flightNumber];
+                    var boardingGate = BGDict.Values.FirstOrDefault(gate => gate.Flight == flightToModify);
+                    string gateNumber = boardingGate != null ? boardingGate.GateName : "Not Assigned";
                     string modChoice = Console.ReadLine();
                     switch (modChoice)
                     {
@@ -437,6 +439,7 @@ internal class Program
                             flightToModify.Destination = Console.ReadLine();
                             Console.Write("Enter new Expected Time (dd/MM/yyyy HH:mm): ");
                             DateTime T = Convert.ToDateTime(Console.ReadLine());
+
                             Console.WriteLine($"Flight Number: {flightToModify.FlightNumber,-15}");
                             Console.WriteLine($"Airline Name: ");
                             Console.WriteLine($"Origin: {flightToModify.Origin,-20}");
@@ -444,7 +447,7 @@ internal class Program
                             Console.WriteLine($"Expected Departure/Arrival Time: {T.ToString("dd/MM/yyyy hh:mm tt"),-25}");
                             Console.WriteLine($"Status: {flightToModify.Status,-20}"); 
                             Console.WriteLine($"Special Request Code: {reqcode,-15}");
-                            Console.WriteLine($"Boarding Gate: {flightToModify.Origin,-20}");
+                            Console.WriteLine($"Boarding Gate: {gateNumber,-20}");
 
                             break;
 
