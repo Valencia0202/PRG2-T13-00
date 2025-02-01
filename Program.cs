@@ -87,10 +87,12 @@ internal class Program
                 flightdict.Add(flight4.FlightNumber, flight4);
 
             }
+
             //foreach (var f in flightdict)
             //{
             //    Console.WriteLine("{0} {1}", f.Key, f.Value);
             //}
+
 
         }
 
@@ -110,29 +112,45 @@ internal class Program
             Console.WriteLine("6. Modify Flight Details");
             Console.WriteLine("7. Display Flight Schedule");
             Console.WriteLine("0. Exit");
-
         }
+        while(true)
+
             {
                 Displaymenu();
                 Console.Write("Please select your option: ");
                 string option = Console.ReadLine();
 
-        //while (true)
-        //{
-        //    displaymenu();
-        //    Console.Write("Please select your option: ");
-        //    string option = Console.ReadLine();
-        //    if (option == "1")
-        //    {
-        //        displayflights();
-        //    }
-        //    else if (option =="2")
-        //    {
-        //        listBG(BGDict);
-        //    }
-        //}
-
-
+                switch (option)
+                {
+                    case "1":
+                        Displayflights();
+                        break;
+                    case "2":
+                        ListBG(BGDict);
+                        break;
+                    case "3":
+                        AssignBG(flightdict, BGDict);
+                        break;
+                    case "4":
+                        // Implement Create Flight functionality
+                        break;
+                    case "5":
+                        // Implement Display Airline Flights functionality
+                        break;
+                    case "6":
+                        // Implement Modify Flight Details functionality
+                        break;
+                    case "7":
+                        // Implement Display Flight Schedule functionality
+                        break;
+                    case "0":
+                        Console.WriteLine("Exiting...");
+                        return; // Exit the program
+                    default:
+                        Console.WriteLine("Invalid option, please try again.");
+                        break;
+                }
+            }
 
         // 3)	List all flights with their basic information
         void Displayflights()
@@ -172,7 +190,7 @@ internal class Program
                 Console.WriteLine($"{item.Value.GateName,-15}{item.Value.SupportsDDJB,-20}{item.Value.SupportsCFFT,-20}{item.Value.SupportsLWTT,-20}");
             }
         }
-        listBG(BGDict);
+        ListBG(BGDict);
 
         // 5)	Assign a boarding gate to a flight
         static void AssignBG(Dictionary<string, Flight> flightDict, Dictionary<string, BoardingGate> BGDict)
@@ -279,6 +297,7 @@ internal class Program
             while (true)
             {
                 Console.Write("Enter Flight Number:");
+                Console.Write("Flight Number:");
                 var flightno = Console.ReadLine();
                 Console.Write("Origin: ");
                 string origin = Console.ReadLine();
@@ -498,6 +517,10 @@ internal class Program
                             break;
 
 
+
+
+        // 8)	Modify flight details(V)
+
                         case "4":
                             string assignedGate = BGDict.Values.FirstOrDefault(g => g.Flight == flightToModify)?.GateName ?? "None";
                             Console.WriteLine("Available Boarding Gates:");
@@ -581,13 +604,15 @@ internal class Program
 
 
 
-
-        // 8)	Modify flight details(V)
-
                 }
 
             }
         }
+        //9 Display Scheduled flights
+
+
+
+
 
         //Advance part b
         void DisplayFeePerAirline(Dictionary<string, Airline>)
@@ -649,5 +674,7 @@ internal class Program
             Console.WriteLine($"Final Total Fees: ${finalTotal:F2}");
             Console.WriteLine($"Discount Percentage: {discountPercentage:F2}%");
         }
+
     }
+}
 
