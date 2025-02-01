@@ -36,12 +36,12 @@ namespace PRG2_T13_00
             double baseFee = 300; // Base fee for 
             return baseFee;
         }
-     
+
         public override string ToString()
         {
             return $"Name: {GateName}\n" +
+                   $"DDJB: {SupportsDDJB}\n" +
                    $"CFFT: {SupportsCFFT}\n" +
-                   $"DDJB:  {SupportsDDJB}\n" +
                    $"LWTT: {SupportsLWTT}";
         }
     }

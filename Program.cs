@@ -95,7 +95,6 @@ internal class Program
             //    Console.WriteLine("{0} {1}", f.Key, f.Value);
             //}
 
-
         }
 
         // print contents of dictionary
@@ -184,7 +183,6 @@ internal class Program
                 Console.WriteLine("{0,-15} {1,-25} {2,-20} {3,-20} {4,-20}", flight.Key, fname, flight.Value.Origin, flight.Value.Destination, flight.Value.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"));
             }
         }
-        Displayflights();
 
         // 4)	List all boarding gates(V)
         static void ListBG(Dictionary<string, BoardingGate> BGDict)
@@ -199,7 +197,7 @@ internal class Program
                 Console.WriteLine($"{item.Value.GateName,-15}{item.Value.SupportsDDJB,-20}{item.Value.SupportsCFFT,-20}{item.Value.SupportsLWTT,-20}");
             }
         }
-        ListBG(BGDict);
+
 
         // 5)	Assign a boarding gate to a flight
         static void AssignBG(Dictionary<string, Flight> flightDict, Dictionary<string, BoardingGate> BGDict)
@@ -386,7 +384,6 @@ internal class Program
             }
         }
 
-        Createflight();
 
 
         // 7)	Display full flight details from an airline(V)
@@ -493,7 +490,7 @@ internal class Program
                             Console.WriteLine($"Airline Name: ");
                             Console.WriteLine($"Origin: {flightToModify.Origin,-20}");
                             Console.WriteLine($"Destination: {flightToModify.Destination,-20}");
-                            Console.WriteLine($"Expected Departure/Arrival Time: {T.ToString("dd/MM/yyyy hh:mm tt"),-25}");
+                            Console.WriteLine($"Expected Departure/Arrival Time: {T.ToString("dd/MM/yyyy hh:mm:ss tt"),-25}");
                             Console.WriteLine($"Status: {flightToModify.Status,-20}");
                             Console.WriteLine($"Special Request Code: {reqcode,-15}");
                             Console.WriteLine($"Boarding Gate: {gateNumber,-20}");
@@ -509,7 +506,7 @@ internal class Program
                             Console.WriteLine($"Airline Name: ");
                             Console.WriteLine($"Origin: {flightToModify.Origin,-20}");
                             Console.WriteLine($"Destination: {flightToModify.Destination,-20}");
-                            Console.WriteLine($"Expected Departure/Arrival Time: {flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}");
+                            Console.WriteLine($"Expected Departure/Arrival Time: {flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm:ss tt"),-25}");
                             Console.WriteLine($"Status: {flightToModify.Status,-20}");
                             Console.WriteLine($"Special Request Code: {reqcode,-15}");
                             Console.WriteLine($"Boarding Gate: {gateNumber,-20}");
@@ -527,7 +524,7 @@ internal class Program
                                 Console.WriteLine($"Airline Name: ");
                                 Console.WriteLine($"Origin: {flightToModify.Origin,-20}");
                                 Console.WriteLine($"Destination: {flightToModify.Destination,-20}");
-                                Console.WriteLine($"Expected Departure/Arrival Time: {flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}");
+                                Console.WriteLine($"Expected Departure/Arrival Time: {flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm:ss tt"),-25}");
                                 Console.WriteLine($"Status: {flightToModify.Status,-20}");
                                 Console.WriteLine($"Special Request Code: {SpecialRequestCode,-15}");
                                 Console.WriteLine($"Boarding Gate: {gateNumber,-20}");
@@ -577,7 +574,7 @@ internal class Program
                                     Console.WriteLine($"Airline Name: ");
                                     Console.WriteLine($"Origin: {flightToModify.Origin,-20}");
                                     Console.WriteLine($"Destination: {flightToModify.Destination,-20}");
-                                    Console.WriteLine($"Expected Departure/Arrival Time: {flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}");
+                                    Console.WriteLine($"Expected Departure/Arrival Time: {flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm:ss tt"),-25}");
                                     Console.WriteLine($"Status: {flightToModify.Status,-20}");
                                     Console.WriteLine($"Special Request Code: {reqcode,-15}");
                                     Console.WriteLine($"Boarding Gate: {selectedGate,-20}");
@@ -653,20 +650,20 @@ internal class Program
                 {
                     reqcode = "CFFT";
                 }
-                //BoardingGate boardingGate = null;
-                //foreach (var gate in BGDict.Values)
-                //{
-                //    if (gate.Flight == flight)  // Check if this gate is assigned to the flight
-                //    {
-                //        boardingGate = gate;
-                //        break;
-                //    }
-                //}
-                //string boardinginfo = " ";
-                //if (boardingGate != null)
-                //{
-                //    boardinginfo = boardingGate.GateName; //print the assigned boarding gate
-                //}
+                BoardingGate boardingGate = null;
+                foreach (var gate in BGDict.Values)
+                {
+                    if (gate.Flight == flight)  // Check if this gate is assigned to the flight
+                    {
+                        boardingGate = gate;
+                        break;
+                    }
+                }
+                string boardinginfo = " ";
+                if (boardingGate != null)
+                {
+                    boardinginfo = boardingGate.GateName; //print the assigned boarding gate
+                }
 
                 string formattedTime = flight.ExpectedTime.ToString("dd/MM/yyyy hh:mm:ss tt");
                 Console.WriteLine(flight + "\n" + "code:" + reqcode + "\n" + "BG:" + "Unassigned" + "\n" + "Status: Scheduled\n" + "Departure: " + formattedTime);
