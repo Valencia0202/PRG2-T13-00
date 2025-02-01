@@ -195,7 +195,111 @@ internal class Program
         ListBG(BGDict);
 
         // 5)	Assign a boarding gate to a flight
-       
+        static void AssignBG(Dictionary<string, Flight> flightDict, Dictionary<string, BoardingGate> BGDict)
+        {
+            while (true)
+            {
+                Console.WriteLine("Enter Flight Number: ");
+                string flightno = Console.ReadLine();
+                if (!flightDict.ContainsKey(flightno))
+                {
+                    Console.WriteLine("Flight not found. Please try again.");
+                    continue;
+                }
+                Flight selectedFlight = flightDict[flightno];
+                Console.WriteLine($"Flight Number: {selectedFlight.FlightNumber}");
+                Console.WriteLine($"Origin: {selectedFlight.Origin}");
+                Console.WriteLine($"Destination: {selectedFlight.Destination}");
+                Console.WriteLine($"Expected Time: {selectedFlight.ExpectedTime}");
+                Console.Write(selectedFlight.Status);
+                string code = "";
+                if (selectedFlight is CFFTFlight)
+                {
+                    code = "CFFT";
+                }
+                else if (selectedFlight is LWTTFlight)
+                {
+                    code = "LWTT";
+                }
+                else if (selectedFlight is DDJBFlight)
+                {
+                    code = "DDJB";
+                }
+                else if (selectedFlight is NORMFlight)
+                {
+                    code = "None";
+                }
+                Console.WriteLine($"Special Request Code: {code}");
+
+                while (true)
+                {
+                    Console.WriteLine("Enter Boarding Gate: ");
+                    string boardingGateName = Console.ReadLine();
+
+                    if (!BGDict.ContainsKey(boardingGateName))
+                    {
+                        Console.WriteLine("Invalid Boarding Gate. Please try again.");
+                        continue;
+                    }
+                    // add boarding gate to flight
+
+                    BoardingGate boardingGate = BGDict[boardingGateName];
+                    if (boardingGate.Flight != null)
+                    {
+                        Console.WriteLine($"The Boarding Gate {boardingGateName} is already assigned to Flight {boardingGate.Flight.FlightNumber}.");
+                        continue;
+                    }
+                    if ((code == "CFFT" && !boardingGate.SupportsCFFT) ||
+                        (code == "DDJB" && !boardingGate.SupportsDDJB) ||
+                        (code == "LWTT" && !boardingGate.SupportsLWTT))
+                    {
+                        Console.WriteLine($"The Boarding Gate {boardingGateName} does not support the special request code {code}. Please try again."); //user validaton for boarding gate inputs that do not match special req codes
+                        continue;
+                    }
+                    boardingGate.Flight = selectedFlight;
+                    Console.WriteLine(boardingGate.ToString());
+
+                    Console.WriteLine("Would you like to update the status of the flight? (Y/N)");
+                    string updateStatus = Console.ReadLine().ToUpper();
+
+                    if (updateStatus == "Y")
+                    {
+                        Console.WriteLine("1. Delayed");
+                        Console.WriteLine("2. Boarding");
+                        Console.WriteLine("3. On Time");
+                        Console.WriteLine("Please select the new status of the flight:");
+                        int statusOption; // user input stored
+                        // read and convert users input into integer, tryparse to ensure program dos not crash due to invalid user input
+                        if (int.TryParse(Console.ReadLine(), out statusOption))
+                        {
+                            // evaluate status option and perform the cases
+                            switch (statusOption)
+                            {
+                                case 1:
+                                    selectedFlight.Status = "Delayed";
+                                    break;
+                                case 2:
+                                    selectedFlight.Status = "Boarding";
+                                    break;
+                                case 3:
+                                    selectedFlight.Status = "On Time";
+                                    break;
+                                default:
+                                    Console.WriteLine("Invalid option. Status set to default: On Time.");
+                                    selectedFlight.Status = "On Time";
+                                    break;
+                            }
+                        }
+                    }
+                    Console.WriteLine($"Flight {selectedFlight.FlightNumber} has been assigned to Boarding Gate {boardingGate.GateName}!");
+                    Console.WriteLine($"Current Status: {selectedFlight.Status}");
+                    break;
+                }
+                break;
+            }
+
+        }
+        AssignBG(flightdict, BGDict);
 
         // 6)	Create a new flight
 
