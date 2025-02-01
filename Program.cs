@@ -487,7 +487,7 @@ internal class Program
                             Console.WriteLine($"Airline Name: ");
                             Console.WriteLine($"Origin: {flightToModify.Origin,-20}");
                             Console.WriteLine($"Destination: {flightToModify.Destination,-20}");
-                            Console.WriteLine($"Expected Departure/Arrival Time: {T.ToString("dd/MM/yyyy hh:mm tt"),-25}");
+                            Console.WriteLine($"Expected Departure/Arrival Time: {T.ToString("dd/MM/yyyy hh:mm:ss tt"),-25}");
                             Console.WriteLine($"Status: {flightToModify.Status,-20}");
                             Console.WriteLine($"Special Request Code: {reqcode,-15}");
                             Console.WriteLine($"Boarding Gate: {gateNumber,-20}");
@@ -503,7 +503,7 @@ internal class Program
                             Console.WriteLine($"Airline Name: ");
                             Console.WriteLine($"Origin: {flightToModify.Origin,-20}");
                             Console.WriteLine($"Destination: {flightToModify.Destination,-20}");
-                            Console.WriteLine($"Expected Departure/Arrival Time: {flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}");
+                            Console.WriteLine($"Expected Departure/Arrival Time: {flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm:ss tt"),-25}");
                             Console.WriteLine($"Status: {flightToModify.Status,-20}");
                             Console.WriteLine($"Special Request Code: {reqcode,-15}");
                             Console.WriteLine($"Boarding Gate: {gateNumber,-20}");
@@ -521,7 +521,7 @@ internal class Program
                                 Console.WriteLine($"Airline Name: ");
                                 Console.WriteLine($"Origin: {flightToModify.Origin,-20}");
                                 Console.WriteLine($"Destination: {flightToModify.Destination,-20}");
-                                Console.WriteLine($"Expected Departure/Arrival Time: {flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}");
+                                Console.WriteLine($"Expected Departure/Arrival Time: {flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm:ss tt"),-25}");
                                 Console.WriteLine($"Status: {flightToModify.Status,-20}");
                                 Console.WriteLine($"Special Request Code: {SpecialRequestCode,-15}");
                                 Console.WriteLine($"Boarding Gate: {gateNumber,-20}");
@@ -571,7 +571,7 @@ internal class Program
                                     Console.WriteLine($"Airline Name: ");
                                     Console.WriteLine($"Origin: {flightToModify.Origin,-20}");
                                     Console.WriteLine($"Destination: {flightToModify.Destination,-20}");
-                                    Console.WriteLine($"Expected Departure/Arrival Time: {flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm tt"),-25}");
+                                    Console.WriteLine($"Expected Departure/Arrival Time: {flightToModify.ExpectedTime.ToString("dd/MM/yyyy hh:mm:ss tt"),-25}");
                                     Console.WriteLine($"Status: {flightToModify.Status,-20}");
                                     Console.WriteLine($"Special Request Code: {reqcode,-15}");
                                     Console.WriteLine($"Boarding Gate: {selectedGate,-20}");
