@@ -494,8 +494,22 @@ internal class Programm
                     Flight flightToModify = flightdict[flightNumber];
                     var boardingGate = BGDict.Values.FirstOrDefault(gate => gate.Flight == flightToModify);
                     string gateNumber = boardingGate != null ? boardingGate.GateName : "Not Assigned";
-                    string modChoice = Console.ReadLine();
-                    switch (modChoice)
+
+                    string modChoice;
+                    bool isValidInput = false;
+
+                    // Loop until a valid input is received
+                    while (!isValidInput)
+                    {
+                        Console.Write("Enter your choice (1-4): ");
+                        modChoice = Console.ReadLine();
+
+                        // Validate the input
+                        if (modChoice == "1" || modChoice == "2" || modChoice == "3" || modChoice == "4")
+                        {
+                            isValidInput = true;
+
+                            switch (modChoice)
                     {
                         case "1":
                             Console.Write("Enter new Origin: ");
