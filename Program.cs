@@ -172,7 +172,7 @@ internal class Programm
                     // Implement Display Flight Schedule functionality
                     break;
                 case "0":
-                    Console.WriteLine("Exiting...");
+                    Console.WriteLine("Goodbye!");
                     return; // Exit the program
                 default:
                     Console.WriteLine("Invalid option, please try again.");
