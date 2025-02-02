@@ -695,7 +695,13 @@ internal class Programm
         }
 
 
-        //Advance part a
+
+
+
+
+
+
+        //Advance part B
         void DisplayFeePerAirline(Terminal terminal)
         {
             // Ensure all flights have assigned boarding gates before proceeding
