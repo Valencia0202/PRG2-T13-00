@@ -26,6 +26,7 @@ namespace PRG2_T13_00
             public Terminal(string terminalName)
             {
                 TerminalName = terminalName;
+            
             }
 
             // Methods
@@ -83,7 +84,7 @@ namespace PRG2_T13_00
             {
                 return $"Terminal Name: {TerminalName}\n" +
                        $"Number of Airlines: {Airlines.Count}\n" +
-                       $"Number of Flights: {Flights.Count}\n" +
+                      
                        $"Number of Boarding Gates: {BoardingGates.Count}";
             }
         }
