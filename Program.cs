@@ -38,7 +38,6 @@ internal class Programm
             terminal5.AddAirline(airline);
 
 
-
         }
 
         //	load the boardinggates.csv file
