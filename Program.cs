@@ -869,8 +869,27 @@ internal class Programm
                     HashSet<string> DiscountOrigins = new HashSet<string> { "DXB", "BKK", "NRT" }; // Discounted origins
 
                     Dictionary<string, double> finalAirlineFees = new Dictionary<string, double>();
+                foreach (var flight in terminal5.Flights.Values)
+                {
+                    string airlineCode = flight.FlightNumber.Substring(0, 2).ToUpper(); // Extract airline code
 
-                    foreach (var airline in terminal5.Airlines.Values)
+                    // Ensure airline exists
+                    Airline airline = terminal5.Airlines.Values.FirstOrDefault(a => a.Code == airlineCode);
+
+                    if (airline != null)
+                    {
+                        airline.AddFlight(flight); // Add flight to airline
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Warning: No airline found for flight {flight.FlightNumber}");
+                    }
+                }
+
+
+            // Example: Displ
+
+            foreach (var airline in terminal5.Airlines.Values)
                     {
                         double airlineSubtotal = 0, airlineDiscounts = 0;
                         var flights = terminal5.Flights.Values.Where(f => terminal5.GetAirlineFromFlight(f) == airline).ToList();
