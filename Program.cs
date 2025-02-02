@@ -14,8 +14,8 @@ internal class Programm
 
     static void Main(string[] args)
     {
-        Terminal terminal = new Terminal("Terminal 5");
-        Console.WriteLine(terminal);
+        Terminal terminal5 = new Terminal("Terminal 5");
+
         // 1)	Load files (airlines and boarding gates)a
         //load the airlines.csv file
         string[] csvlinesAirline = File.ReadAllLines("airlines.csv");
@@ -33,7 +33,12 @@ internal class Programm
                 Code = airlineCode
             };
 
+
             airlineDict[airlineCode] = airline; // add the Airlines objects into an Airline Dictionary
+            terminal5.AddAirline(airline);
+
+
+
         }
 
         //	load the boardinggates.csv file
@@ -53,6 +58,7 @@ internal class Programm
 
             // add the Boarding Gate objects into a Boarding Gate dictionary
             BGDict.Add(gateName, boardingGate);
+            terminal5.AddBoardingGate(boardingGate);
         }
 
 
@@ -72,31 +78,40 @@ internal class Programm
             {
                 Flight flight = new DDJBFlight(flightno, origin, dest, datetime, "On Time", 300.00);
                 flightdict.Add(flight.FlightNumber, flight);
+                terminal5.Flights.Add(flight.FlightNumber, flight);
+
             }
             else if (code == "CFFT")
             {
-                Flight flight2 = new CFFTFlight(flightno, origin, dest, datetime, "On Time", 150.00);
-                flightdict.Add(flight2.FlightNumber, flight2);
+                Flight flight = new CFFTFlight(flightno, origin, dest, datetime, "On Time", 150.00);
+                flightdict.Add(flight.FlightNumber, flight);
+                terminal5.Flights.Add(flight.FlightNumber, flight);
+
 
             }
             else if (code == "LWTT")
             {
-                Flight flight3 = new LWTTFlight(flightno, origin, dest, datetime, "On Time", 500.00);
-                flightdict.Add(flight3.FlightNumber, flight3);
+                Flight flight = new LWTTFlight(flightno, origin, dest, datetime, "On Time", 500.00);
+                flightdict.Add(flight.FlightNumber, flight);
+                terminal5.Flights.Add(flight.FlightNumber, flight);
+
 
             }
             else
             {
-                Flight flight4 = new NORMFlight(flightno, origin, dest, datetime, "On Time");
-                flightdict.Add(flight4.FlightNumber, flight4);
+                Flight flight = new NORMFlight(flightno, origin, dest, datetime, "On Time");
+                flightdict.Add(flight.FlightNumber, flight);
+                terminal5.Flights.Add(flight.FlightNumber, flight);
+
+
 
             }
+
 
             //foreach (var f in flightdict)
             //{
             //    Console.WriteLine("{0} {1}", f.Key, f.Value);
             //}
-
         }
 
         // print contents of dictionary
@@ -121,7 +136,7 @@ internal class Programm
         while (true)
 
         {
-
+            Console.WriteLine(terminal5);
             Displaymenu();
             Console.Write("Please select your option: ");
             string option = Console.ReadLine();
@@ -153,7 +168,7 @@ internal class Programm
                     ProcessFlights();
                     break;
                 case "9":
-                    DisplayFeePerAirline(terminal);
+                    DisplayFeePerAirline(terminal5);
                     // Implement Display Flight Schedule functionality
                     break;
                 case "0":
@@ -271,11 +286,12 @@ internal class Programm
 
                     Console.WriteLine("Would you like to update the status of the flight? (Y/N)");
                     string updateStatus = Console.ReadLine().ToUpper();
-                    if (updateStatus == null || updateStatus != "Y" || updateStatus != "N")
+                    while (updateStatus != "Y" && updateStatus != "N")
                     {
-                        Console.WriteLine("Invalid Option. Please Choose Again.");
-                        continue;
+                        Console.WriteLine("Invalid option. Please enter 'Y' for Yes or 'N' for No:");
+                        updateStatus = Console.ReadLine().Trim().ToUpper();
                     }
+
 
                     if (updateStatus == "Y")
                     {
@@ -307,7 +323,10 @@ internal class Programm
                         }
                     }
                     Console.WriteLine($"Flight {selectedFlight.FlightNumber} has been assigned to Boarding Gate {boardingGate.GateName}!");
+                    if (updateStatus != "Y" || updateStatus != "N")
+                    {
 
+                    }
                     break;
                 }
                 break;
@@ -427,6 +446,7 @@ internal class Programm
 
             // Get the airline object
             Airline selectedAirline = airlineDict[airlineOpt];
+
             Console.WriteLine("=============================================");
             Console.WriteLine($"List of flights for {selectedAirline.Name} ");
             Console.WriteLine("=============================================");
@@ -657,10 +677,10 @@ internal class Programm
                     }
                 }
 
-     //9 Display Scheduled flights
+                //9 Display Scheduled flights
 
-    void SortedFlights()
-    {
+                void SortedFlights()
+                {
                     var sortedFlights = flightdict.Values.ToList();
 
                     sortedFlights.Sort();
@@ -710,6 +730,8 @@ internal class Programm
                 }
 
 
+                // Advance part a
+
                 //Advance part a
                 void ProcessFlights()
 
@@ -755,6 +777,10 @@ internal class Programm
                         {
                             reqCode = "CFFT";
                         }
+                        else if (flight is NORMFlight)
+                        {
+                            reqCode = "NORM";
+                        }
                         // Find a matching unassigned boarding gate
                         foreach (var gate in BGDict.Values)
                         {
@@ -762,7 +788,7 @@ internal class Programm
                             {
 
                                 // Check if the gate supports the flight's special request
-                                if (string.IsNullOrEmpty(reqCode))
+                                if (reqCode =="NORM")
                                 {
                                     // If the flight has no special request, assign it to any unassigned gate
                                     assignedGate = gate;
@@ -824,95 +850,116 @@ internal class Programm
                     Console.WriteLine($"Manually Assigned Flights: {manuallyAssignedFlights}");
                     Console.WriteLine($"Percentage of Automatically Assigned Flights: {flightAutoAssignPercentage:F2}%");
                     Console.WriteLine($"Percentage of Automatically Assigned Boarding Gates: {gateAutoAssignPercentage:F2}%");
+
                 }
 
-
-                //Advance part b
-                void DisplayFeePerAirline(Terminal terminal)
+                //Advance part B
+                void DisplayFeePerAirline(Terminal terminal5)
                 {
-                    // Check if all flights have assigned boarding gates
-                    if (!terminal.Flights.Values.All(f => terminal.BoardingGates.Values.Any(gate => gate.Flight == f)))
+                    // Ensure all flights have assigned boarding gates before proceeding
+                    if (!terminal5.Flights.Values.All(f => terminal5.BoardingGates.Values.Any(gate => gate.Flight == f)))
                     {
                         Console.WriteLine("Ensure all flights have their Boarding Gates assigned before running this feature again.");
                         return;
                     }
 
                     double totalFees = 0, totalDiscounts = 0;
-                    HashSet<string> DiscountOrigins = new HashSet<string> { "DXB", "BKK", "NRT" };
-                    Dictionary<string, double> finalAirlineFees = new Dictionary<string, double>();
+                    HashSet<string> DiscountOrigins = new HashSet<string> { "DXB", "BKK", "NRT" }; // Discounted origins
 
-                    // Process each airline
-                    foreach (var airline in terminal.Airlines.Values)
+                    Dictionary<string, double> finalAirlineFees = new Dictionary<string, double>();
+                foreach (var flight in terminal5.Flights.Values)
+                {
+                    string airlineCode = flight.FlightNumber.Substring(0, 2).ToUpper(); // Extract airline code
+
+                    // Ensure airline exists
+                    Airline airline = terminal5.Airlines.Values.FirstOrDefault(a => a.Code == airlineCode);
+
+                    if (airline != null)
+                    {
+                        airline.AddFlight(flight); // Add flight to airline
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Warning: No airline found for flight {flight.FlightNumber}");
+                    }
+                }
+
+
+            // Example: Displ
+
+            foreach (var airline in terminal5.Airlines.Values)
                     {
                         double airlineSubtotal = 0, airlineDiscounts = 0;
-                        var flights = terminal.Flights.Values.Where(f => terminal.GetAirlineFromFlight(f) == airline).ToList();
+                        var flights = terminal5.Flights.Values.Where(f => terminal5.GetAirlineFromFlight(f) == airline).ToList();
 
-                        if (!flights.Any()) // Skip airlines without flights
+                        if (flights.Count == 0)
                         {
                             Console.WriteLine($"Airline {airline.Name} has no flights.");
                             continue;
                         }
 
-                        int flightsWithNoRequest = 0;
+                        int flightsWithNoRequest = 0, eligibleFlightsForDiscount = 0;
 
                         foreach (var flight in flights)
                         {
-                            double flightFee = 300; // Base fee
+                            double flightFee = 300; // Boarding Gate Base Fee
 
-                            // Additional fees based on origin and destination
-                            if (flight.Origin == "SIN") flightFee += 800;
-                            if (flight.Destination == "SIN") flightFee += 500;
+                            if (flight.Origin == "SIN") flightFee += 800; // Departing fee
+                            if (flight.Destination == "SIN") flightFee += 500; // Arriving fee
 
-                            // Special fees for certain flight types
-                            string reqCode = flight switch
-                            {
-                                CFFTFlight => "CFFT",
-                                DDJBFlight => "DDJB",
-                                LWTTFlight => "LWTT",
-                                _ => null
-                            };
+                            string reqCode = (flight is CFFTFlight) ? "CFFT" :
+                                             (flight is DDJBFlight) ? "DDJB" :
+                                             (flight is LWTTFlight) ? "LWTT" : null;
 
                             if (reqCode == "CFFT") flightFee += 150;
                             else if (reqCode == "DDJB") flightFee += 300;
-                            else if (reqCode == "LWTT") flightFee += 150;
                             else flightsWithNoRequest++;
 
-                            // Apply discount if origin matches
-                            if (DiscountOrigins.Contains(flight.Origin)) airlineDiscounts += 25;
+                            if (DiscountOrigins.Contains(flight.Origin)) airlineDiscounts += 25; // $25 Discount for certain origins
 
                             airlineSubtotal += flightFee;
+                            eligibleFlightsForDiscount++;
                         }
 
-                        // Apply discounts based on flight count and requests
-                        airlineDiscounts += (flights.Count / 3) * 350; // Discount for every 3 flights
-                        airlineDiscounts += flightsWithNoRequest * 50; // Discount for flights with no request
-                        if (flights.Count > 5) airlineDiscounts += airlineSubtotal * 0.03; // Extra discount for > 5 flights
+                        airlineDiscounts += (eligibleFlightsForDiscount / 3) * 350; // $350 for every 3 flights
+                        airlineDiscounts += flightsWithNoRequest * 50; // $50 per flight without special request
+                        if (flights.Count > 5) airlineDiscounts += (airlineSubtotal * 0.03); // Extra 3% discount for >5 flights
 
-                        // Calculate final fee
                         double finalFee = airlineSubtotal - airlineDiscounts;
                         totalFees += airlineSubtotal;
                         totalDiscounts += airlineDiscounts;
 
+                        // Store final fee per airline
                         finalAirlineFees[airline.Name] = finalFee;
                     }
 
-                    // Display results
-                    Console.WriteLine("\n--- Final Fees Per Airline ---");
-                    foreach (var entry in finalAirlineFees)
+                    // Process each airline
+                    foreach (var airline in terminal5.Airlines.Values)
                     {
-                        Console.WriteLine($"Airline: {entry.Key} | Final Fee: ${entry.Value:F2}");
+                        double airlineSubtotal = 0, airlineDiscounts = 0;
+                        var flights = terminal5.Flights.Values.Where(f => terminal5.GetAirlineFromFlight(f) == airline).ToList();
+                        // Display final airline fees separately
+                        Console.WriteLine("\n--- Final Fees Per Airline ---");
+                        foreach (var entry in finalAirlineFees)
+                        {
+                            Console.WriteLine($"Airline: {entry.Key} | Final Fee: ${entry.Value:F2}");
+                        }
+
+                        // Display overall summary
+                        double finalTotal = totalFees - totalDiscounts;
+                        double discountPercentage = totalFees > 0 ? (totalDiscounts / totalFees) * 100 : 0;
+
+                        Console.WriteLine("\n--- Summary for the Day ---");
+                        Console.WriteLine($"Total Subtotal Fees: ${totalFees:F2}");
+                        Console.WriteLine($"Total Discounts: -${totalDiscounts:F2}");
+                        Console.WriteLine($"Final Total Fees: ${finalTotal:F2}");
+                        Console.WriteLine($"Discount Percentage: {discountPercentage:F2}%");
                     }
 
-                    double finalTotal = totalFees - totalDiscounts;
-                    double discountPercentage = totalFees > 0 ? (totalDiscounts / totalFees) * 100 : 0;
 
-                    Console.WriteLine("\n--- Summary for the Day ---");
-                    Console.WriteLine($"Total Subtotal Fees: ${totalFees:F2}");
-                    Console.WriteLine($"Total Discounts: -${totalDiscounts:F2}");
-                    Console.WriteLine($"Final Total Fees: ${finalTotal:F2}");
-                    Console.WriteLine($"Discount Percentage: {discountPercentage:F2}%");
                 }
             }
-        }
-    }
-}
+       }
+    
+
+

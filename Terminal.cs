@@ -26,6 +26,7 @@ namespace PRG2_T13_00
             public Terminal(string terminalName)
             {
                 TerminalName = terminalName;
+            
             }
 
             // Methods
@@ -33,11 +34,11 @@ namespace PRG2_T13_00
             // Add an airline to the dictionary
             public bool AddAirline(Airline airline)
             {
-                if (airline == null || Airlines.ContainsKey(airline.Name))
+                if (airline == null || Airlines.ContainsKey(airline.Code)) // Use Code as key 
                 {
                     return false;
                 }
-                Airlines.Add(airline.Name, airline);
+                Airlines.Add(airline.Code, airline); // Store airlines by Code 
                 return true;
             }
 
