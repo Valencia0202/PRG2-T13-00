@@ -132,10 +132,11 @@ internal class Programm
             Console.WriteLine("9. Fees per Airline");
             Console.WriteLine("0. Exit");
         }
+        Console.WriteLine(terminal5);
         while (true)
 
         {
-            Console.WriteLine(terminal5);
+            
             Displaymenu();
             Console.Write("Please select your option: ");
             string option = Console.ReadLine();

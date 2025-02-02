@@ -82,10 +82,12 @@ namespace PRG2_T13_00
             // ToString override
             public override string ToString()
             {
-                return $"Terminal Name: {TerminalName}\n" +
-                       $"Number of Airlines: {Airlines.Count}\n" +
-                       $"Number of Flights: {Flights.Count}\n" +
-                       $"Number of Boarding Gates: {BoardingGates.Count}";
+            return $"Loading Airlines...\n" +
+                   $"{Airlines.Count} Airlines Loaded!\n" +
+                   $"Loading Boarding Gates...\n" +
+                   $"{BoardingGates.Count} Boarding Gates Loaded!" +
+                   $"Loading Flights...\n"+
+                   $"{Flights.Count} Flights Loaded!\n";
             }
         }
     }
