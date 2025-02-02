@@ -7,8 +7,14 @@ using System.Runtime.Intrinsics.X86;
 using System.Security.Cryptography;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-// Zhe Ling features 2, 3, 5, 6 & 9, 
-// Valencia features 1, 4, 7 & 8.  
+// Zhe Ling features 2, 3, 5, 6 & 9, adv a
+// Valencia features 1, 4, 7 & 8.  adv b
+
+//==========================================================
+// Student Number	: S10268058
+// Student Name	: Chai Zhe Ling
+// Partner Name	: Valencia Amora Chua Lie Cia
+//==========================================================
 internal class Programm
 {
 
