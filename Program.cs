@@ -7,8 +7,14 @@ using System.Runtime.Intrinsics.X86;
 using System.Security.Cryptography;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-// Zhe Ling features 2, 3, 5, 6 & 9, 
-// Valencia features 1, 4, 7 & 8.  
+// Zhe Ling features 2, 3, 5, 6 & 9, adv a
+// Valencia features 1, 4, 7 & 8.  adv b
+
+//==========================================================
+// Student Number	: S10268058
+// Student Name	: Chai Zhe Ling
+// Partner Name	: Valencia Amora Chua Lie Cia
+//==========================================================
 internal class Programm
 {
 
@@ -72,7 +78,7 @@ internal class Programm
             string dest = lines[2];
             DateTime datetime = Convert.ToDateTime(lines[3]);
             string code = lines[4];
-            //create new flight object
+            //create new flight object with the codes
             if (code == "DDJB")
             {
                 Flight flight = new DDJBFlight(flightno, origin, dest, datetime, "On Time", 300.00);
@@ -107,10 +113,7 @@ internal class Programm
             }
 
 
-            //foreach (var f in flightdict)
-            //{
-            //    Console.WriteLine("{0} {1}", f.Key, f.Value);
-            //}
+         
         }
 
         // print contents of dictionary
@@ -249,7 +252,7 @@ internal class Programm
                     Console.WriteLine($"Origin: {selectedFlight.Origin}");
                     Console.WriteLine($"Destination: {selectedFlight.Destination}");
                     Console.WriteLine($"Expected Time: {selectedFlight.ExpectedTime}");
-
+                    // get the code
                     string code = "";
                     if (selectedFlight is CFFTFlight)
                     {
@@ -274,6 +277,7 @@ internal class Programm
                         Console.WriteLine($"The Boarding Gate {boardingGateName} is already assigned to Flight {boardingGate.Flight.FlightNumber}.");
                         continue;
                     }
+                    //check if the gate supports the code
                     if ((code == "CFFT" && !boardingGate.SupportsCFFT) ||
                         (code == "DDJB" && !boardingGate.SupportsDDJB) ||
                         (code == "LWTT" && !boardingGate.SupportsLWTT))
@@ -281,6 +285,7 @@ internal class Programm
                         Console.WriteLine($"The Boarding Gate {boardingGateName} does not support the special request code {code}. Please try again."); //user validaton for boarding gate inputs that do not match special req codes
                         continue;
                     }
+                    //assign the boarding gate
                     boardingGate.Flight = selectedFlight;
                     Console.WriteLine(boardingGate.ToString());
 
@@ -342,7 +347,7 @@ internal class Programm
             {
                 Console.Write("Enter Flight Number:");
                 var flightno = Console.ReadLine().Trim().ToUpper();
-               
+                
                 Console.Write("Enter Origin: ");
                 string origin = Console.ReadLine();
                 Console.Write("Enter Destination:");
@@ -355,7 +360,7 @@ internal class Programm
                 string code = Console.ReadLine().Trim().ToUpper();
 
                 Airline airline = new Airline();
-
+                //create new flight by code
                 if (code == "None")
                 {
                     Flight flights = new NORMFlight(flightno, origin, dest, ET, "On Time");
@@ -739,15 +744,15 @@ internal class Programm
             // Identify unassigned flights
             foreach (var flight in flightdict.Values)
             {
-                if (!BGDict.Values.Any(gate => gate.Flight == flight))
+                if (!BGDict.Values.Any(gate => gate.Flight == flight)) //for each gate in the dictionary, it checks whether the Flight property in gates is equal to the flight object provided.
                 {
-                    unassignedFlightQueue.Enqueue(flight);
+                    unassignedFlightQueue.Enqueue(flight); //add flight to queue if returned true (no gates have the specified flight assigned)
                 }
             }
 
             // Count unassigned flights and gates
             int unassignedFlights = unassignedFlightQueue.Count;
-            int unassignedGates = BGDict.Values.Count(gate => gate.Flight == null);
+            int unassignedGates = BGDict.Values.Count(gate => gate.Flight == null); //For each gate in the dictionary values, the expression checks if gate.Flight is null—meaning the gate is not assigned to any flight.
 
             Console.WriteLine($"Total Unassigned Flights: {unassignedFlights}");
             Console.WriteLine($"Total Unassigned Boarding Gates: {unassignedGates}");
@@ -807,7 +812,7 @@ internal class Programm
                 if (assignedGate != null)
                 {
                     assignedGate.Flight = flight;
-                    automaticallyAssignedFlights++;
+                    automaticallyAssignedFlights++; // increase by 1 when a flight is  assigned
 
                     // Print the flight details
                     var flightCode = flight.FlightNumber.Split(' ')[0];
