@@ -433,9 +433,9 @@ internal class Programm
                 Console.WriteLine($"{airline.Code,-15}{airline.Name,-20}");
             }
 
-            Console.Write("Enter Airline Code: ");
+            Console.Write("Enter Airline Code: "); //Prompts user for airline code
             string airlineOpt = Console.ReadLine().ToUpper();
-            if (!airlineDict.ContainsKey(airlineOpt))
+            if (!airlineDict.ContainsKey(airlineOpt)) // validates input
             {
                 Console.WriteLine("Invalid airline code. Please try again.");
             }
@@ -461,7 +461,7 @@ internal class Programm
         //8 Modify flight
         void ModifyFlightDetails()
         {
-            DisplayAirlineFlight();
+            DisplayAirlineFlight(); //show flights
 
             foreach (var flight in flightdict.Values)
             {
@@ -861,15 +861,18 @@ internal class Programm
                 return;
             }
 
+            // Initialize total fees and discounts
             double totalFees = 0, totalDiscounts = 0;
+            // Set of airport codes eligible for a discount
             HashSet<string> DiscountOrigins = new HashSet<string> { "DXB", "BKK", "NRT" }; // Discounted origins
-
+           // Dictionary to store final airline fees
             Dictionary<string, double> finalAirlineFees = new Dictionary<string, double>();
+            // Associate flights with their respective airlines
             foreach (var flight in terminal5.Flights.Values)
             {
                 string airlineCode = flight.FlightNumber.Substring(0, 2).ToUpper(); // Extract airline code
 
-                // Ensure airline exists
+                // Find the corresponding airline
                 Airline airline = terminal5.Airlines.Values.FirstOrDefault(a => a.Code == airlineCode);
 
                 if (airline != null)
@@ -883,13 +886,16 @@ internal class Programm
             }
 
 
-            // Example: Displ
+            // Iterate over each airline to calculate fees and discounts
 
             foreach (var airline in terminal5.Airlines.Values)
             {
                 double airlineSubtotal = 0, airlineDiscounts = 0;
+
+                // Retrieve flights associated with the airline
                 var flights = terminal5.Flights.Values.Where(f => terminal5.GetAirlineFromFlight(f) == airline).ToList();
 
+                // Skip airlines without flights
                 if (flights.Count == 0)
                 {
                     Console.WriteLine($"Airline {airline.Name} has no flights.");
@@ -898,17 +904,22 @@ internal class Programm
 
                 int flightsWithNoRequest = 0, eligibleFlightsForDiscount = 0;
 
+                // Process each flight associated with the airline
                 foreach (var flight in flights)
                 {
                     double flightFee = 300; // Boarding Gate Base Fee
 
+                    // Additional fees based on departure and arrival locations
                     if (flight.Origin == "SIN") flightFee += 800; // Departing fee
                     if (flight.Destination == "SIN") flightFee += 500; // Arriving fee
 
+                    // Determine the special request code of the flight
                     string reqCode = (flight is CFFTFlight) ? "CFFT" :
                                      (flight is DDJBFlight) ? "DDJB" :
                                      (flight is LWTTFlight) ? "LWTT" : null;
 
+
+                    // Apply additional fees based on the request type
                     if (reqCode == "CFFT") flightFee += 150;
                     else if (reqCode == "DDJB") flightFee += 300;
                     else flightsWithNoRequest++;
@@ -918,10 +929,13 @@ internal class Programm
                     airlineSubtotal += flightFee;
                     eligibleFlightsForDiscount++;
                 }
+
+                // Apply bulk discounts
                 airlineDiscounts += (eligibleFlightsForDiscount / 3) * 350; // $350 for every 3 flights
                 airlineDiscounts += flightsWithNoRequest * 50; // $50 per flight without special request
                 if (flights.Count > 5) airlineDiscounts += (airlineSubtotal * 0.03); // Extra 3% discount for >5 flights
 
+                // Calculate the final fee for the airline
                 double finalFee = airlineSubtotal - airlineDiscounts;
                 totalFees += airlineSubtotal;
                 totalDiscounts += airlineDiscounts;
@@ -933,6 +947,7 @@ internal class Programm
             // Process each airline
             foreach (var airline in terminal5.Airlines.Values)
             {
+
                 double airlineSubtotal = 0, airlineDiscounts = 0;
                 var flights = terminal5.Flights.Values.Where(f => terminal5.GetAirlineFromFlight(f) == airline).ToList();
                 // Display final airline fees separately
